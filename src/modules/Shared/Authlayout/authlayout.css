@@ -1,0 +1,33 @@
+/*  */
+
+/* auth layout */
+
+.auth-container{
+height: 100vh;
+background-image: url(E:\up\food-app\foodapp\src\modules\Shared\Authlayout\ella-olsson-C1Q3qOTlegg-unsplash1.jpg );
+background-size: cover ;
+background-position: center;
+
+}
+
+.bg-layer{
+    background: linear-gradient(45deg ,rgba(46, 140, 51,0.6) ,rgba(0, 0, 0,0.6))  ;
+}
+
+/* login */
+
+.auth-link{
+    color: var(--main-color);
+}
+
+.auth-btn{
+
+background-color: var(--main-color) !important;
+width: 100%;
+margin-top: 2rem;
+}
+
+.auth-container .input-group *{
+    background-color: #F7F7F7 !important;
+    border: none;
+}
