@@ -8,9 +8,9 @@ export default function Authlayout() {
     <div className=" auth-container ">
       <div className=" container-fluid bg-layer h-100">
         <div className="row w-100 h-100 justify-content-center align-items-center">
-          <div className=" col-md-6 bg-white rounded-4 text-center p-3">
-            <div className="logo">
-              <img src={logo} alt="" />
+          <div className=" col-md-5 bg-white rounded-5 text-center p-3 mt-5">
+            <div className="logo w-50 mx-auto">
+              <img src={logo} alt="" className="w-100" />
             </div>
             <div className="p-5">
               <Outlet></Outlet>

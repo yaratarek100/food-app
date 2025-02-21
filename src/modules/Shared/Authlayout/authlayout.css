@@ -25,9 +25,19 @@ background-position: center;
 background-color: var(--main-color) !important;
 width: 100%;
 margin-top: 2rem;
+color: white !important;
 }
 
-.auth-container .input-group *{
+.auth-container .input-group {
+border-radius: 5px;
+overflow: hidden;
+}
+.auth-container .input-group > *{
     background-color: #F7F7F7 !important;
     border: none;
+    color: #8391A1;
+    box-shadow: none;
+}
+.auth-container .input-group icon{
+    border-right: solid 1px #8391A1 !important;
 }

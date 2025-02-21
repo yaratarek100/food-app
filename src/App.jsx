@@ -7,7 +7,6 @@ import Authlayout from './modules/Shared/Authlayout/Authlayout.jsx';
 import Signup from './modules/Auth/Signup/Signup';
 import Verify from './modules/Auth/Verify/Verify';
 import ForgetPass from './modules/Auth/Forget-pass/Forget-pass';
-import ChangePass from './modules/Auth/Change-pass/Change-Pass';
 import ResetPass from './modules/Auth/Reset-pass/Reset-pass';
 import Notfound from './modules/Shared/Notfound/Notfound';
 import Dashbourd from './modules/Shared/Dashbourd/Dashbourd.jsx'
@@ -30,8 +29,7 @@ function App() {
         {path : 'login' ,element :<Signin></Signin>},
         {path : 'signup' ,element :<Signup></Signup>},
         {path : 'verify-account' ,element :<Verify></Verify>},
-        {path : 'forge-password' ,element :<ForgetPass></ForgetPass>},
-        {path : 'change-password' ,element :<ChangePass></ChangePass>},
+        {path : 'forget-password' ,element :<ForgetPass></ForgetPass>},
         {path : 'reset-password' ,element :<ResetPass></ResetPass>},
       ]
     },
