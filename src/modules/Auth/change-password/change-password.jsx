@@ -2,23 +2,29 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { notify } from "./../../../utils/notify";
-import {  publicAxiosInstance, USER_URLS } from "../../../services/urls";
-import { EMAIL_VALIDATION } from "../../../services/validations";
+import {  privateAxiosInstance, USER_URLS } from "../../../services/urls";
+import logo from "../../../assets/4 4.png";
 
-export default function ResetPassword() {
+
+export default function ChangePassword({show, setShow}) {
+ 
   const navigate = useNavigate();
-  const [showPassword, setShowPassword] = useState(false);
-  const [showRePassword, setShowRePassword] = useState(false);
+  const [showOldPassword, setShowOldPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showNewRePassword, setShowNewRePassword] = useState(false);
 
    const location = useLocation()
     let userEmail = location.state?.email 
   
 
   const togglePasswordVisibility = () => {
-    setShowPassword((prev) => !prev);
+    setShowOldPassword((prev) => !prev);
+  };
+  const togglePasswordVisibility1 = () => {
+    setShowNewPassword((prev) => !prev);
   };
   const togglePasswordVisibility2 = () => {
-    setShowRePassword((prev) => !prev);
+    setShowNewRePassword((prev) => !prev);
   };
 
   let {
@@ -29,34 +35,45 @@ export default function ResetPassword() {
     trigger
    
   } = useForm(
-    {defaultValues : {email :userEmail} },
     {mode :"onChange"});
   
-    const password = watch("confirmPassword")
-    const confirmPassword = watch("password")
+    const newPassword = watch("confirmNewPassword")
+    const confirmNewPassword = watch("newPassword")
 
     useEffect(()=>{
         
-        if(confirmPassword)
-          {trigger("confirmPassword")}
+        if(confirmNewPassword)
+          {trigger("confirmNewPassword")}
     
-      },[password,confirmPassword,trigger])
+      },[newPassword,confirmNewPassword,trigger])
 
   const onSubmit = async (data) => {
     try {
-      let response = await publicAxiosInstance.post(
-        USER_URLS.RESET_PASS,
+      let response = await privateAxiosInstance.put(
+        USER_URLS.CHANGE_PASS,
         data
       );
       notify(response.data.message, "success");
+      console.log(response);
       navigate("/" );
     } catch (error) {
+      console.log(error);
       notify(error.response.data.message, "error");
     }
   };
 
   return (
-    <>
+    <div className={ ` change-pass position-absolute w-100 d-flex justify-content-center align-items-center top-0 left-0  ${show ?"d-block":"d-none"}`} 
+    onClick={()=>{setShow(false)}}>
+ <div className={`   bg-white rounded-5 text-center p-3 mt-5`}   onClick={(e) => e.stopPropagation()}>
+            <div className="logo w-100 position-relative">
+              <img src={logo} alt="" className="w-50 mx-auto" />
+              <i className="fa fa-close position-absolute " onClick={()=>{setShow(false)}}></i>
+            </div>
+            <div className="p-5">
+
+
+   
       <div className="title text-start">
         <h2 className="h4">Reset Password</h2>
         <p className="text-black-50 ">
@@ -64,37 +81,36 @@ export default function ResetPassword() {
         </p>
       </div>
       <form action="" className="text-start" onSubmit={handleSubmit(onSubmit)}>
-        <div className="input-group mb-3 border ">
+
+      <div className="input-group mb-3 border ">
           <span className="input-group-text border-0 ">
-            <i className="fa-solid fa-envelope border-end border-2 pe-2"></i>
-          </span>
-          <input
-            type="text"
-            {...register("email", EMAIL_VALIDATION)}
-            className="form-control border-0 shadow-none"
-            id="floatingInputGroup1"
-            placeholder="email"
-          />
-        </div>
-
-        {errors.email && (
-          <span className="text-danger"> {errors.email.message}</span>
-        )}
-
-        <div className="input-group mb-3  border ">
-          <span className=" input-group-text border-0">
             <i className="fa-solid fa-lock border-end border-2 pe-2"></i>
           </span>
-          <input
-            type="text"
-            {...register("seed", { required: "OTP is required" })}
-            className="form-control border-0 shadow-none "
-            id="floatingInputGroup1"
-            placeholder="OTP"
-          />
+
+            <input
+              type={showOldPassword ? "text" : "password"}
+              {...register("oldPassword", { required: "Password is required" })}
+              className="form-control border-0 shadow-none"
+              id="floatingInputGroup1"
+              placeholder="Old Password"
+            />
+            <button
+              type="button"
+              className=" border-0 px-3"
+              onClick={togglePasswordVisibility}
+              aria-label={showOldPassword ? "Hide password" : "Show password"}
+            >
+              <i
+                className={`fa-solid ${
+                  showOldPassword ? "fa-eye-slash" : "fa-eye"
+                }`}
+              ></i>
+            </button>
+
+
         </div>
-        {errors.seed && (
-          <span className=" text-danger"> {errors.seed.message}</span>
+        {errors.oldPassword && (
+          <span className="text-danger"> {errors.oldPassword.message}</span>
         )}
 
         <div className="input-group mb-3 border ">
@@ -102,8 +118,8 @@ export default function ResetPassword() {
             <i className="fa-solid fa-lock border-end border-2 pe-2"></i>
           </span>
             <input
-               type={showPassword ? "text" : "password"}
-              {...register("password", {
+               type={showNewPassword ? "text" : "password"}
+              {...register("newPassword", {
                 required: "Password is required",
                 validate: (value) => {
                   if (value.length < 6)
@@ -121,23 +137,23 @@ export default function ResetPassword() {
               })}
               className="form-control border-0 shadow-none"
               id="floatingInputGroup1"
-              placeholder="password"
+              placeholder="New Password"
             />
             <button
               type="button"
               className=" border-0 px-3"
-              onClick={togglePasswordVisibility}
-              aria-label={showPassword ? "Hide password" : "Show password"}
+              onClick={togglePasswordVisibility1}
+              aria-label={showNewPassword ? "Hide password" : "Show password"}
             >
               <i
                 className={`fa-solid ${
-                  showPassword ? "fa-eye-slash" : "fa-eye"
+                  showNewPassword ? "fa-eye-slash" : "fa-eye"
                 }`}
               ></i>
             </button>
         </div>
-        {errors.password && (
-          <span className="text-danger"> {errors.password.message}</span>
+        {errors.newPassword && (
+          <span className="text-danger"> {errors.newPassword.message}</span>
         )}
 
         <div className="input-group mb-3 border ">
@@ -145,44 +161,48 @@ export default function ResetPassword() {
             <i className="fa-solid fa-lock border-end border-2 pe-2"></i>
           </span>
           <input
-             type={showRePassword ? "text" : "password"}
-            {...register("confirmPassword", {
+             type={showNewRePassword ? "text" : "password"}
+            {...register("confirmNewPassword", {
               required: "Confirm Password is required",
 
 
 
               validate: (value) =>
-              (value === watch("password")|| "Passwords do not match"),
+              (value === watch("newPassword")|| "Passwords do not match"),
             })}
             className="form-control shadow-none border-0"
             id="floatingInputGroup1"
-            placeholder="confirm password"
+            placeholder="Confirm New Password"
           />
           <button
               type="button"
               className=" border-0 px-3"
               onClick={togglePasswordVisibility2}
-              aria-label={showRePassword ? "Hide password" : "Show password"}
+              aria-label={showNewRePassword ? "Hide password" : "Show password"}
             >
               <i
                 className={`fa-solid ${
-                  showRePassword ? "fa-eye-slash" : "fa-eye"
+                  showNewRePassword ? "fa-eye-slash" : "fa-eye"
                 }`}
               ></i>
             </button>
         </div>
-        {errors.confirmPassword && (
-          <span className="text-danger"> {errors.confirmPassword.message}</span>
+        {errors.confirmNewPassword && (
+          <span className="text-danger"> {errors.confirmNewPassword.message}</span>
         )}
 
         <button className="btn auth-btn" type="submit" disabled={isSubmitting}>
           {isSubmitting ? (
             <i className="fa-solid fa-spinner fa-spin"></i>
           ) : (
-            "Reset Password"
+            "Change Password"
           )}
         </button>
       </form>
-    </>
+    
+            </div>
+            </div>
+    </div>
+ 
   );
 }

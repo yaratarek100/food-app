@@ -1,3 +1,300 @@
-:root{
---main-color :#4AA35A
+:root {
+  --main-color: #4aa35a;
+}
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+/*  */
+
+/* auth layout */
+
+.auth-container {
+  height: 100vh;
+  background-image: url(E:\up\food-app\foodapp\src\modules\Shared\Authlayout\ella-olsson-C1Q3qOTlegg-unsplash1.jpg);
+  background-size: cover;
+  background-position: center;
+}
+
+.bg-layer {
+  background: linear-gradient(
+    45deg,
+    rgba(46, 140, 51, 0.6),
+    rgba(0, 0, 0, 0.6)
+  );
+}
+
+/* login */
+
+.auth-link2 {
+  color: var(--main-color);
+}
+.auth-link:hover {
+  text-decoration: underline !important;
+}
+
+.auth-btn {
+  background-color: var(--main-color) !important;
+  width: 100%;
+  margin-top: 2rem;
+  color: white !important;
+}
+
+.auth-container .input-group,
+.change-pass .input-group {
+  border-radius: 5px;
+  overflow: hidden;
+}
+.auth-container .input-group > *,
+.change-pass .input-group > * {
+  background-color: #f7f7f7 !important;
+  color: #8391a1;
+  box-shadow: none;
+}
+
+.auth-container .input-group icon,
+.change-pass .input-group icon {
+  border-right: solid 1px #8391a1 !important;
+}
+
+/* sidebar */
+.SidebarDiv {
+  min-height: 100%;
+  width: fit-content;
+}
+
+.master .SidebarDiv .ps-sidebar-root {
+  border-top-right-radius: 60px;
+  background-color: #1f263e !important;
+  border: none;
+  height: 100%;
+  padding-top: 1.5rem;
+  color: white;
+  min-width: 100px;
+}
+
+.SidebarDiv .ps-sidebar-root :first-child {
+  background-color: transparent;
+}
+.SidebarDiv li a {
+  margin-block: 0.7rem;
+  border-left: transparent solid 3px;
+}
+.SidebarDiv .ps-menu-root .css-ewdv3l li a:hover {
+  background-color: hsla(152, 100%, 29%, 10%) !important;
+  border-left: #4aa35a solid 3px;
+}
+/* master layout */
+.master {
+  min-height: 100vh;
+  width: 100%;
+}
+.mainDiv {
+  flex-grow: 1;
+}
+.mainDiv .navbar .navbar-nav .nav-item .nav-link {
+  font-size: 1.2rem !important;
+  color: #2f313f !important;
+}
+
+.mainDiv #bell-d {
+  font-size: 1.5rem !important;
+}
+.mainDiv #bell {
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: red;
+  border-radius: 50%;
+  height: 18px;
+  width: 18px;
+  position: absolute;
+  top: 3px;
+  right: -2px;
+}
+/* header */
+.headerDiv {
+  background-color: var(--main-color);
+  min-height: 4rem;
+  padding-inline: 4rem;
+}
+.headerDiv h2 {
+  font-size: 40px;
+  font-weight: 700;
+}
+.headerDiv p {
+  font-size: 16px;
+  font-weight: 400;
+}
+.headerDiv span {
+  font-size: 32px;
+  margin-inline: 1rem;
+  font-weight: 400;
+  color: #dfe0e0;
+}
+/* fill recipes */
+
+.fillrecipes {
+  background-color: #f0ffef;
+  padding: 1.5rem;
+  padding-inline: 3rem;
+}
+.fillrecipes div {
+  color: #1f263e;
+  width: 50%;
+}
+.fillrecipes div span {
+  color: var(--main-color);
+  margin-inline: 0.5rem;
+}
+.fillrecipes button,
+.small-header button,
+.robot button {
+  color: white;
+  background-color: var(--main-color);
+  font-weight: 600;
+}
+/* lists */
+
+.list .table {
+  /* --bs-table-bg: none !important; */
+}
+.list .table thead {
+  /* background-color: #e2e5eb !important; */
+  /* padding: 1rem; */
+  /* border-radius: 10px !important; */
+  /* display: flex; */
+}
+.list .table thead tr {
+  /* gap: 12%; */
+  /* display: flex; */
+}
+
+.list tbody tr:nth-child(odd) {
+  /* background-color: #8391a1 !important; */
+}
+
+.list td div {
+  flex-direction: column;
+  background-color: white;
+  box-shadow: 1px 2px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+  position: absolute;
+  z-index: 3 !important;
+  display: none !important;
+  width: 11rem;
+  right: 0;
+  top: 50%;
+}
+.list td div.active-category {
+  display: flex !important;
+}
+.list .fa-bars {
+  cursor: pointer;
+}
+
+.list td div button {
+  text-align: left;
+  padding-left: 10%;
+  padding-block: 3%;
+}
+.list td div button:hover {
+  opacity: 0.5 !important;
+}
+.list td div button i {
+  color: var(--main-color);
+  margin-right: 10%;
+}
+.list td div button:nth-of-type(2) {
+  background-color: #f8f9fb;
+}
+.list tbody Img {
+ width: 4rem;
+ 
+
+}
+.list td div button:first-of-type i {
+  /* border-radius: 50%; */
+  /* border: solid 1px var(--main-color); */
+  /* padding: 2%; */
+  /* font-size: 0.8rem; */
+}
+
+/* notfound */
+.notfound {
+  background-image: url(./assets/Vector.png);
+  background-position: right;
+  background-repeat: no-repeat;
+}
+.robot {
+  background-image: url(./assets/Group48101676.png);
+  background-position: bottom right;
+  background-repeat: no-repeat;
+  width: 100%;
+  position: absolute;
+  height: 100%;
+  bottom: 0;
+  right: 0;
+  color: #1f263e;
+}
+
+.robot img {
+  width: 20rem;
+}
+.robot h1 {
+  font-size: 40px;
+  font-weight: 700;
+}
+.robot span {
+  color: var(--main-color);
+  margin-bottom: -30px;
+  font-weight: 400;
+  font-size: 32px;
+}
+.robot span {
+  font-weight: 400;
+  font-size: 32px;
+}
+.robot .maindiv {
+  gap: 10rem;
+}
+.robot .maindiv .text {
+  padding: 1rem;
+}
+
+/* nodata */
+.nodata {
+  height: fit-content;
+}
+.nodata div {
+  margin-inline: auto;
+  color: #1f263e;
+  text-align: center;
+}
+.nodata div p {
+  color: #49494999;
+}
+
+/* change-pass */
+.change-pass ,.delete-conf{
+  top: 0;
+  left: 0;
+  width: 100%;
+
+  z-index: 10;
+  
+  min-height: 100vh;
+
+  & > div {
+    box-shadow: 1px 1px 15px 2px #0000002b !important;
+  }
+}
+
+.change-pass .logo i {
+right: 8%;
+top: 29% !important;
+font-size: x-large;
+cursor: pointer;
 }

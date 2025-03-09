@@ -1,9 +1,14 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
 import logo from "../../../assets/4 4.png";
-import "./authlayout.css";
+
+
+
+
 
 export default function Authlayout() {
+
+
   return (
     <div className=" auth-container ">
       <div className=" container-fluid bg-layer h-100">
@@ -13,8 +18,11 @@ export default function Authlayout() {
               <img src={logo} alt="" className="w-100" />
             </div>
             <div className="p-5">
-              <Outlet></Outlet>
-            </div>
+       
+          
+
+              <Outlet ></Outlet>
+                </div>
           </div>
         </div>
       </div>

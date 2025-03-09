@@ -1,56 +1,75 @@
-import axios from "axios";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Navigate, useNavigate } from "react-router-dom";
+import {  useLocation, useNavigate } from "react-router-dom";
+import { notify } from './../../../utils/notify';
+import {  publicAxiosInstance, USER_URLS } from "../../../services/urls";
+import {EMAIL_VALIDATION} from './../../../services/validations';
 
 
 export default function Signin() {
 
-  let {register, formState:{errors}, handleSubmit} = useForm();
-  const navigate = useNavigate();
+  const location = useLocation()
+  let userEmail = location.state?.email 
+
+
+
+  let {
+    register,
+    formState: { errors ,isSubmitting},
+    handleSubmit,
+
+  } = useForm({mode :"onChange" 
+    , defaultValues : {email :userEmail}}  ); 
 
 
   
-    const onSubmit = async(data) => {
-      try{
-        let respose =await axios.post('https://upskilling-egypt.com:3006/api/v1/Users/Reset/Request',data)
-        console.log(respose.data.message);
 
-        navigate('/reset-password');
-        
-          }catch(error){
-        console.log(error);
-        console.log(error.response.data.message);
-          }
-        }
+  const navigate = useNavigate();
 
+  const onSubmit = async (data) => {
+    try {
+      let response = await publicAxiosInstance.post(
+        USER_URLS.FORGET_PASS,
+        data
+      );
+      notify(response.data.message, "success");
+      
+      navigate("/reset-password",  {state : {email :data.email} });
+    } catch (error) {
+      console.log(error);
+      notify("❌ Failed to send code! Please try again.", "error");
+    }
+  };
 
   return (
     <>
       <div className="title text-start">
         <h2 className="h4">Forgot Your Password?</h2>
-        <p className="text-black-50 ">No worries! Please enter your email and we will send a password reset link </p>
+        <p className="text-black-50 ">
+          No worries! Please enter your email and we will send a password reset
+          link
+        </p>
       </div>
       <form action="" onSubmit={handleSubmit(onSubmit)} className="text-start">
-      <div className="input-group mb-3 bg-body-tertiary ">
-        <span className="input-group-text">
-        <i className="fa-solid fa-mobile-screen"></i>
-        </span>
-        <div className="form-floating">
-          <input
-          {...register('email',{required : 'email is required'})}
-            type="text"
-            className="form-control"
-            id="floatingInputGroup1"
-            placeholder="Username"
-          />
-          <label htmlFor="floatingInputGroup1">Enter your E-mail</label>
+        <div className="input-group mb-3 border  ">
+          <span className="input-group-text border-0">
+            <i className="fa-solid fa-mobile-screen border-end border-2 pe-2"></i>
+          </span>
+            <input
+             {...register("email", EMAIL_VALIDATION)}
+              type="text"
+              className="form-control shadow-none border-0"
+              id="floatingInputGroup1"
+              placeholder="user email"
+            />
         </div>
-      </div>
-      {errors.email && <span className="text-danger"> {errors.email.message}</span>}
-  
-      <button className="btn auth-btn">submit</button>
+        {errors.email && (
+          <span className="text-danger"> {errors.email.message}</span>
+        )}
 
+        <button className="btn auth-btn" type="submit" disabled={isSubmitting}>
+        {isSubmitting ? <i className="fa-solid fa-spinner fa-spin"></i> : "submit"}
+        </button>
       </form>
     </>
   );
