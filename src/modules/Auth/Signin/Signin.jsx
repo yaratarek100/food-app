@@ -8,6 +8,7 @@ import { LoginDataContext } from "../../../context/LoginDataContext";
 export default function Signin() {
 
   const {saveLoginData}=useContext(LoginDataContext);
+  
   let {
     register,
     formState: { errors ,isSubmitting},
@@ -34,11 +35,11 @@ export default function Signin() {
       );
       notify("Welcome back! You have signed in successfully", "success");
       navigate("/dashboard" ); 
-      localStorage.setItem("token", response.data?.token);
+      localStorage.setItem("token", response?.data?.token);
      
       saveLoginData();
     } catch (error) {
-      notify(error.response.data?.message, "error");
+      notify(error.response?.data?.message, "error");
     }
   };
 

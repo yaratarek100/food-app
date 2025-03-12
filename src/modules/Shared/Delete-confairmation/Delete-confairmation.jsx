@@ -1,34 +1,37 @@
-import React from "react";
+import { useState } from 'react';
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+import notImg from '../../../assets/Group 48102290.jpg';
 
-import notImg from '../../../assets/Group 48102290.jpg'
 
-export default function DeleteConfairmation({ show, setShow }) {
+function DeleteConfermation({show,handleClose,deletionFunction}) {
+  
+
+
   return (
-    <div
-      className={` delete-conf position-absolute d-flex justify-content-center align-items-center top-0 left-0  ${
-        show ? "d-block" : "d-none"
-      }`}
-      onClick={() => {
-        setShow(false);
-      }}
-    >
-      <div
-        className={` position-relative  bg-white rounded-5 text-center p-3 mt-5`}
-        onClick={(e) => e.stopPropagation()}
-      >
-        <i
-          className="fa fa-close position-absolute "
-          onClick={() => {
-            setShow(false);
-          }}
-        ></i>
+    <>
+ 
 
-         <div className="notImg w-50">
-               <img src={notImg}/>
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+   
+        </Modal.Header>
+        <div className="delete-content notImg w-50">
+          <div>
+
+               <img src={notImg} className='w-100' />
+          </div>
                <h2 className='h6 my-3 fw-semibold'>No Data !</h2>
                <p className='text-break'>are you sure you want to delete this item ? if you are sure just click on delete it</p>
+               <button className='btn btn-outline-danger' onClick={deletionFunction}>Delete this item </button>
              </div>
-      </div>
-    </div>
+       
+      </Modal>
+    </>
   );
 }
+
+export default DeleteConfermation;
+
+
+        

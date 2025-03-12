@@ -1,16 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { CATEGORIES_URLS, privateAxiosInstance} from "../../../services/urls";
+import { CATEGORIES_URLS, privateAxiosInstance } from "../../../services/urls";
 import Nodata from "./../../Shared/Nodata/Nodata";
 import Header from "./../../../modules/Shared/Header/Header";
 import SmallHeader from "./../../Shared/smallHeader/smallHeader";
-import DeleteConfairmation from "../../Shared/Delete-confairmation/Delete-confairmation";
+import DeleteConfermation from "../../Shared/Delete-confairmation/Delete-confairmation";
+import LoadingScreen from "../../Shared/LoadingScreen/LoadingScreen";
+import { notify } from "../../../utils/notify";
+import CategoryForm from "../CategoryForm/CategoryForm";
 
 export default function CategoriesList() {
   const [categoriesList, setCategoriesList] = useState([]);
-  const [activeCategory, setActiveCategory] = useState("");
-  // const [deleteCard, setdeleteCard] = useState(false)
+  const [activeField, setActiveField] = useState(null);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [showDeletionCard, setShowDeletionCard] = useState(false);
+  const [showCategoryForm, setShowCategoryForm] = useState(false);
+  const [categoryName, setCategoryName] = useState("");
 
-  let getCategoriesList = async (pageSize, pageNumber) => {
+  const getCategoriesList = async (pageSize, pageNumber) => {
     try {
       let response = await privateAxiosInstance.get(
         CATEGORIES_URLS.CATEGORIES_LIST(pageSize, pageNumber)
@@ -19,128 +25,175 @@ export default function CategoriesList() {
     } catch (error) {
       console.log(error);
     }
+
+    setIsLoaded(true);
   };
 
-  let processCategory = async (categoryId, operation) => {
-    try {
-      let response;
-      switch (operation.toLowerCase()) {
-        case "get":
-          response = await privateAxiosInstance.get(
-            CATEGORIES_URLS.CATEGORY(categoryId)
-          );
-          console.log(response.data);
-          break;
-        // case "put":
-        //   response = await privateAxiosInstance.put(
-        //     CATEGORIES_URLS.CATEGORY(categoryId),
+// let processCategory = async (categoryId, operation) => {
+  //   try {
+  //     let response;
+  //     switch (operation.toLowerCase()) {
+  //       case "get":
+  //         response = await privateAxiosInstance.get(
+  //           CATEGORIES_URLS.CATEGORY(categoryId)
+  //         );
+  //         console.log(response.data);
+  //         break;
 
-        //   );
-        //   break;
-        case "delete":
-          response = await privateAxiosInstance.delete(
-            CATEGORIES_URLS.CATEGORY(categoryId)
-          );
-          getCategoriesList(10, 1);
-          break;
-        default:
-          console.error("Invalid operation:", operation);
-          return;
-      }
+  //       default:
+  //         console.error("Invalid operation:", operation);
+  //         return;
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
+  const deleteCategory = async () => {
+    try {
+      await privateAxiosInstance.delete(
+        CATEGORIES_URLS.CATEGORY(activeField)
+      );
+      notify("category was deleted successfully", "success");
     } catch (error) {
       console.log(error);
+      notify(error.response?.data?.message, "error");
     }
+
+    handleClose();
+  };
+
+  const addCategory = async (data) => {
+    try {
+      const response = await privateAxiosInstance.post(
+        CATEGORIES_URLS.ADD_CATEGORY,
+        data
+      );
+      notify("category was added successfully", "success");
+    } catch (error) {
+      console.log(error);
+      notify(error.response?.data?.message, "error");
+    }
+    handleClose();
+  };
+
+  const editCategory = async (data) => {
+    try {
+      const response = await privateAxiosInstance.put(
+        CATEGORIES_URLS.CATEGORY(activeField),
+        data
+      );
+      notify("category was edited successfully", "success");
+    } catch (error) {
+      console.log(error);
+      notify(error.response?.data?.message, "error");
+    }
+    handleClose();
+  };
+
+  const handleClose = async () => {
+    setActiveField(null);
+    await getCategoriesList(50, 1);
+    setShowDeletionCard(false);
+    setShowCategoryForm(false);
+    setCategoryName(null);
   };
 
   useEffect(() => {
     getCategoriesList(10, 1);
   }, []);
 
-
   return (
-
     <div className="list">
       <Header title={"Categories"} titleSpan={" Items"}></Header>
-      <SmallHeader Item={"Category"}> </SmallHeader>
-     
+      <SmallHeader Item={"Category"} setShow={setShowCategoryForm}></SmallHeader>
 
-        {categoriesList.length === 0 ? (
+      {isLoaded ? (
+        categoriesList.length === 0 ? (
           <>
-           <table className="table categories-list">
-           <thead>
-             <tr>
-               <th scope="col">Item Name</th>
-               <th scope="col">Actions</th>
-             </tr>
-           </thead>
-           </table>
-          <Nodata></Nodata>
+            <table className="table categories-list">
+              <thead>
+                <tr>
+                  <th scope="col">Name</th>
+                  <th scope="col">Actions</th>
+                </tr>
+              </thead>
+            </table>
+            <Nodata />
           </>
         ) : (
-          <table className="table table-striped table-hover  categories-list">
-          <thead>
-            <tr>
-              <th scope="col">Item Name</th>
-              <th scope="col">Actions</th>
-            </tr>
-          </thead>
-          <tbody className="">
-            {categoriesList.map((item) => (
-              <tr key={item.id}>
-                <td>{item.name}</td>
-                <td className="  rounded-1 position-relative">
-                  <i
-                    className="fa fa-bars "
-                    onClick={() => {
-                      setActiveCategory(
-                        activeCategory === item.id ? null : item.id
-                      );
-                    }}
-                  ></i>
+          <table className="table table-striped table-hover categories-list">
+            <thead>
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {categoriesList.map((item) => (
+                <tr key={item.id}>
+                  <td>{item.name}</td>
+                  <td className="position-relative">
+                    <i
+                      className="fa fa-ellipsis-h"
+                      onClick={() => {
+                        setActiveField(
+                          activeField === item.id ? null : item.id
+                        );
+                      }}
+                    ></i>
 
-                  <div
-                    className={` start-0 ${
-                      activeCategory === item.id ? "active-category" : ""
-                    } `}
-                  >
+                    <div className={`start-0 ${activeField === item.id ? "active-field" : ""}`}>
+
                     <button
                       className="btn  text-secondary  rounded-0 "
                       onClick={() => {
-                        processCategory(item.id, "get");
+                        processRecipe(item?.id, "get");
                       }}
                     >
                       <i className="fa-regular fa-eye"></i> View
-                    </button>
-                    <button
-                      className="btn text-secondary  rounded-0 "
-                      onClick={() => {
-                        processCategory(item.id, "put");
-                      }}
-                    >
-                      <i className="fa fa-edit"> </i> Edit
-                    </button>
-                    <button
-                      className="btn  text-secondary rounded-0 "
-                      onClick={() => {
-                        processCategory(item.id, "delete");
-                        // setdeleteCard(true);
-                      }}
-                    >
-                      <i className="fa-solid fa-trash "></i>Delete
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-      </table>
+                    </button> 
+                      <button
+                        className="btn text-secondary rounded-0"
+                        onClick={() => {
+                          setCategoryName(item.name);
+                          setShowCategoryForm(true);
+                        }}
+                      >
+                        <i className="fa fa-edit"></i> Edit
+                      </button>
+                      <button
+                        className="btn text-secondary rounded-0"
+                        onClick={() => {
+                          setShowDeletionCard(true);
+                        }}
+                      >
+                        <i className="fa-solid fa-trash"></i> Delete
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )
+      ) : (
+        <LoadingScreen />
+      )}
 
+      <CategoryForm
+        addCategory={addCategory}
+        editCategory={editCategory}
+        show={showCategoryForm}
+        itemData={categoryName}
+        handleClose={handleClose}
+      />
 
-        )}
-   {/* <DeleteConfairmation show={true} ></DeleteConfairmation> 
-   is not completed */}
+      <DeleteConfermation
+        show={showDeletionCard}
+        deletionFunction={deleteCategory}
+        handleClose={handleClose}
+      />
     </div>
-    
-
   );
 }

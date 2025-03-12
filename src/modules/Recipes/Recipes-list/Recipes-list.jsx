@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { baseUrl, imgBaseUrl, privateAxiosInstance, RECIPES_URLS } from "../../../services/urls";
+import {  imgBaseUrl, privateAxiosInstance, RECIPES_URLS } from "../../../services/urls";
 import Nodata from "./../../Shared/Nodata/Nodata";
 
 import Header from "./../../../modules/Shared/Header/Header";
 import SmallHeader from "./../../Shared/smallHeader/smallHeader";
-import CategoriesData from './../../categories/categories-data/categories-data';
 import emptyImg from './../../../assets/empty.jpg';
+import LoadingScreen from "../../Shared/LoadingScreen/LoadingScreen";
+import { notify } from "../../../utils/notify";
+import DeleteConfermation from "../../Shared/Delete-confairmation/Delete-confairmation";
 
 export default function RecipesList() {
   const [recipesList, setRecipesList] = useState([]);
-
-  const [activeCategory, setActiveCategory] = useState("");
+    const [activeField, setActiveField] = useState("");
+    const [isLoaded, setIsLoaded] = useState(false);
+    const [showDeletionCard, setShowDeletionCard] = useState(false);
 
   let getRecipesList = async (pageSize, pageNumber) => {
     try {
@@ -21,6 +24,8 @@ export default function RecipesList() {
     } catch (error) {
       console.log(error);
     }
+    
+    setIsLoaded(true)
   };
 
   let processRecipe = async (RecipeId, operation) => {
@@ -53,15 +58,35 @@ export default function RecipesList() {
     }
   };
 
+    const deleteRecipe = async () => {
+  
+      try {
+        let response = await privateAxiosInstance.delete(
+          RECIPES_URLS.RECIPE(activeField)
+        );
+        notify("recipe was deleted successfully", "success");
+      } catch (error) {
+        console.log(error);
+        notify(error.response?.data?.message, "error");
+      }
+  
+      setActiveField(null);
+      await getRecipesList(50, 1);
+      setShowDeletionCard(false);
+    };
+
+
   useEffect(() => {
-    getRecipesList(10, 1);
+    getRecipesList(50, 1);
   }, []);
 
   return (
     <div className="list">
       <Header title={"Recipes"} titleSpan={" Items"}></Header>
       <SmallHeader Item={"recipe"}></SmallHeader>
-      {recipesList.length === 0 ? (
+      {
+        isLoaded ?
+     ( recipesList.length === 0 ? (
         <>
           <table className="table table-striped table-hover recipes-list ">
             <thead>
@@ -88,6 +113,7 @@ export default function RecipesList() {
                 <th scope="col">Description</th>
                 <th scope="col">Discount</th>
                 <th scope="col">Category</th>
+                <th scope="col">Actions</th>
             </tr>
           </thead>
 
@@ -100,18 +126,18 @@ export default function RecipesList() {
                 <td>{item?.description}</td>
                 <td>20</td>
                 <td>{item?.category[0]?.name}</td>
-                <td className="  rounded-1 position-relative">
+                <td className="  position-relative">
                   <i
-                    className="fa fa-bars "
+                    className="fa fa-ellipsis-h"
                     onClick={() => {
-                      setActiveCategory(
-                        activeCategory === item?.id ? null : item?.id
+                      setActiveField(
+                        activeField === item?.id ? null : item?.id
                       );
                     }}
                   ></i>
                   <div
                     className={` ${
-                      activeCategory === item?.id ? "active-category" : ""
+                      activeField === item?.id ? "active-field" : ""
                     } `}
                   >
                     <button
@@ -134,7 +160,7 @@ export default function RecipesList() {
                     <button
                       className="btn  text-secondary rounded-0 "
                       onClick={() => {
-                        processRecipe(item?.id, "delete");
+                        setShowDeletionCard(true);
                       }}
                     >
                       <i className="fa-solid fa-trash "></i>Delete
@@ -145,7 +171,16 @@ export default function RecipesList() {
             ))}
           </tbody>
         </table>
-      )}
+      ))
+      :
+      <LoadingScreen></LoadingScreen>
+      
+      }
+      <DeleteConfermation
+          show={showDeletionCard}
+          setShow={setShowDeletionCard}
+          deletionFunction={deleteRecipe}
+        ></DeleteConfermation>
     </div>
   );
 }

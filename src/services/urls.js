@@ -23,11 +23,16 @@ export const USER_URLS = {
 export const CATEGORIES_URLS = {
   CATEGORIES_LIST : (pageSize,pageNumber) => `/Category/?pageSize=${pageSize}&pageNumber=${pageNumber}`,
   CATEGORY : (id)=> `/Category/${id}`,
-  ADD_CATEGORY : "",
+  ADD_CATEGORY : "/Category/",
 };
 
 export const RECIPES_URLS = {
   RECIPES_LIST : (pageSize,pageNumber) => `/Recipe/?pageSize=${pageSize}&pageNumber=${pageNumber}`,
   RECIPE : (id)=> `/Recipe/${id}`,
-  ADD_RECIPE : "",
+  ADD_RECIPE : "/Recipe/",
+};
+export const USERS_URLS = {
+  USERS_LIST : (pageSize,pageNumber) => `/Users/?pageSize=${pageSize}&pageNumber=${pageNumber}`,
+  USERS : (id)=> `/Users/${id}`,
+  ADD_USER : "/Users/",
 };

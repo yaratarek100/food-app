@@ -4,6 +4,7 @@
 body {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    
 }
 /*  */
 
@@ -158,22 +159,31 @@ body {
 }
 /* lists */
 
-.list .table {
-  /* --bs-table-bg: none !important; */
+
+
+.table-striped>tbody td {
+
+    vertical-align: middle;
+  
 }
-.list .table thead {
-  /* background-color: #e2e5eb !important; */
-  /* padding: 1rem; */
-  /* border-radius: 10px !important; */
-  /* display: flex; */
+.table-striped>tbody>tr>* {
+ 
+  border: none;
 }
-.list .table thead tr {
-  /* gap: 12%; */
-  /* display: flex; */
+.table>thead {
+  vertical-align: middle;
+  background-color: #E2E5EB !important;
 }
 
-.list tbody tr:nth-child(odd) {
-  /* background-color: #8391a1 !important; */
+.table-striped>tbody>tr:nth-of-type(odd)>* {
+  --bs-table-color-type: #3A3A3D !important;
+  --bs-table-bg-type: #F8F9FB !important;
+  
+}
+
+.table-striped>tbody>tr:nth-of-type(odd)>* {
+  /* --bs-table-color-type: #3A3A3D !important;
+  --bs-table-bg-type: #F8F9FB !important; */
 }
 
 .list td div {
@@ -188,7 +198,7 @@ body {
   right: 0;
   top: 50%;
 }
-.list td div.active-category {
+.list td div.active-field {
   display: flex !important;
 }
 .list .fa-bars {
@@ -277,8 +287,21 @@ body {
   color: #49494999;
 }
 
+/* deletion card */
+.modal{
+  --bs-modal-header-border-width:none !important;
+}
+.delete-content{
+ margin-inline: auto;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+.delete-content button{
+  margin-block: 0.5rem;
+}
+
 /* change-pass */
-.change-pass ,.delete-conf{
+.change-pass {
   top: 0;
   left: 0;
   width: 100%;
@@ -297,4 +320,20 @@ right: 8%;
 top: 29% !important;
 font-size: x-large;
 cursor: pointer;
+}
+
+/* laoding screen */
+
+.loading-screen{
+  height: 25rem;
+  i{
+    color: var(--main-color);
+    font-size: 5rem;
+  }
+}
+/* category-form */
+.category-form{
+  Button{
+    background-color: var(--main-color) !important;
+  }
 }
