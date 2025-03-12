@@ -49,7 +49,7 @@ export default function UsersList() {
   };
 
   useEffect(() => {
-    getUsersList(100, 3);
+    getUsersList(100, 3); 
   }, []);
 
   let processUsers = async (userId, operation) => {

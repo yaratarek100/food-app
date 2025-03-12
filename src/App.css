@@ -61,17 +61,21 @@ body {
 /* sidebar */
 .SidebarDiv {
   min-height: 100%;
-  width: fit-content;
 }
 
 .master .SidebarDiv .ps-sidebar-root {
-  border-top-right-radius: 60px;
   background-color: #1f263e !important;
   border: none;
   height: 100%;
   padding-top: 1.5rem;
   color: white;
   min-width: 100px;
+  border-top-right-radius: 60px;
+  overflow: hidden;
+}
+
+.master .SidebarDiv ul {
+  width: 87%;
 }
 
 .SidebarDiv .ps-sidebar-root :first-child {
@@ -332,8 +336,24 @@ cursor: pointer;
   }
 }
 /* category-form */
+.modal.show .modal-dialog {
+  padding-top: 20%;
+}
+
 .category-form{
+
+  input{
+    background-color: #dfe0e0;
+    border: none;
+    outline: none;
+    padding: 0.3rem;
+    padding-inline:1rem ;
+    border-radius: 6px;
+  }
   Button{
     background-color: var(--main-color) !important;
+    padding-inline:1rem ;
+    border: none;
+
   }
 }

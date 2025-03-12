@@ -37,15 +37,16 @@ export default function CategoryForm({
   };
 
   return (
-    <div className="category-form">
+
+    <div className="">
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>{itemData ? "Edit" : "Add" } Category</Modal.Title>
         </Modal.Header>
-        <form onSubmit={handleSubmit(onSubmit)} className="text-center">
+        <form onSubmit={handleSubmit(onSubmit)} className="category-form text-center">
           <input
             type="text"
-            className="d-block mx-auto"
+            className="d-block mx-auto w-75 mb-5 mt-4"
             placeholder="category name"
             {...register("name", { required: "category name is required" })}
           />
