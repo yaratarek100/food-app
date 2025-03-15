@@ -21,18 +21,18 @@ export const USER_URLS = {
 };
 
 export const CATEGORIES_URLS = {
-  CATEGORIES_LIST : (pageSize,pageNumber) => `/Category/?pageSize=${pageSize}&pageNumber=${pageNumber}`,
+  CATEGORIES_LIST : `/Category/`,
   CATEGORY : (id)=> `/Category/${id}`,
   ADD_CATEGORY : "/Category/",
 };
 
 export const RECIPES_URLS = {
-  RECIPES_LIST : (pageSize,pageNumber) => `/Recipe/?pageSize=${pageSize}&pageNumber=${pageNumber}`,
+  RECIPES_LIST :  `/Recipe/`,
   RECIPE : (id)=> `/Recipe/${id}`,
   ADD_RECIPE : "/Recipe/",
 };
 export const USERS_URLS = {
-  USERS_LIST : (pageSize,pageNumber) => `/Users/?pageSize=${pageSize}&pageNumber=${pageNumber}`,
+  USERS_LIST :  `/Users/`,
   USERS : (id)=> `/Users/${id}`,
   ADD_USER : "/Users/",
 };

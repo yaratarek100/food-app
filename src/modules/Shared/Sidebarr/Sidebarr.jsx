@@ -1,10 +1,25 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Sidebar, Menu, MenuItem } from "react-pro-sidebar";
 import sideBarLogo from "./../../../assets/3.svg";
 import { Link, useNavigate } from "react-router-dom";
 import ChangePassword from "../../Auth/change-password/change-password";
 
 export default function Sidebarr() {
+
+
+  useEffect(() => {
+    const handleResize = () => {
+      setCplapsedState(window.innerWidth < 900);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+
   const [collapsedState, setCplapsedState] = useState(false);
   let togelColapse = () => {
     setCplapsedState(!collapsedState);
@@ -19,7 +34,7 @@ export default function Sidebarr() {
 const [showChangePassword, setshowChangePassword] = useState(false)
   return (
     <>
-    <Sidebar collapsed={collapsedState}>
+    <Sidebar collapsed={ collapsedState }>
       <Menu >
         <MenuItem
           onClick={togelColapse}
@@ -53,13 +68,13 @@ const [showChangePassword, setshowChangePassword] = useState(false)
         <MenuItem
         onClick={()=>{setshowChangePassword(false)}}
           component={<Link to="categories-list" />}
-          icon={<i className="fa-solid fa-lock"></i>}
-        >
+        icon={<i className="fa-solid fa-table-cells-large"></i>}
+          >
           Categories
         </MenuItem>
         <MenuItem
          onClick={()=>{setshowChangePassword(!showChangePassword)}}
-          icon={<i className="fa-solid fa-table-cells-large"></i>}
+         icon={<i className="fa-solid fa-lock"></i>}
         >
           Change Password
         </MenuItem>

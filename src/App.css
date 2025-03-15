@@ -4,7 +4,6 @@
 body {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-    
 }
 /*  */
 
@@ -162,34 +161,35 @@ body {
   font-weight: 600;
 }
 /* lists */
-
-
-
-.table-striped>tbody td {
-
-    vertical-align: middle;
-  
+.list .table {
+  min-height: 30rem;
 }
-.table-striped>tbody>tr>* {
- 
+
+.table-striped > tbody td {
+  vertical-align: middle;
+}
+.table-striped > tbody > tr > * {
   border: none;
 }
-.table>thead {
+.table > thead {
   vertical-align: middle;
-  background-color: #E2E5EB !important;
+  background-color: #e2e5eb !important;
 }
 
-.table-striped>tbody>tr:nth-of-type(odd)>* {
-  --bs-table-color-type: #3A3A3D !important;
-  --bs-table-bg-type: #F8F9FB !important;
-  
+.table-striped > tbody > tr:nth-of-type(odd) > * {
+  --bs-table-color-type: #3a3a3d !important;
+  --bs-table-bg-type: #f8f9fb !important;
 }
 
-.table-striped>tbody>tr:nth-of-type(odd)>* {
+.table-striped > tbody > tr:nth-of-type(odd) > * {
   /* --bs-table-color-type: #3A3A3D !important;
   --bs-table-bg-type: #F8F9FB !important; */
 }
 
+.list td.position-relative i {
+cursor: pointer;
+padding: 3px;
+}
 .list td div {
   flex-direction: column;
   background-color: white;
@@ -200,7 +200,7 @@ body {
   display: none !important;
   width: 11rem;
   right: 0;
-  top: 50%;
+  top: 60%;
 }
 .list td div.active-field {
   display: flex !important;
@@ -225,9 +225,7 @@ body {
   background-color: #f8f9fb;
 }
 .list tbody Img {
- width: 4rem;
- 
-
+  width: 4rem;
 }
 .list td div button:first-of-type i {
   /* border-radius: 50%; */
@@ -292,15 +290,15 @@ body {
 }
 
 /* deletion card */
-.modal{
-  --bs-modal-header-border-width:none !important;
+.modal {
+  --bs-modal-header-border-width: none !important;
 }
-.delete-content{
- margin-inline: auto;
+.delete-content {
+  margin-inline: auto;
   text-align: center;
   margin-bottom: 1rem;
 }
-.delete-content button{
+.delete-content button {
   margin-block: 0.5rem;
 }
 
@@ -311,7 +309,7 @@ body {
   width: 100%;
 
   z-index: 10;
-  
+
   min-height: 100vh;
 
   & > div {
@@ -320,17 +318,17 @@ body {
 }
 
 .change-pass .logo i {
-right: 8%;
-top: 29% !important;
-font-size: x-large;
-cursor: pointer;
+  right: 8%;
+  top: 29% !important;
+  font-size: x-large;
+  cursor: pointer;
 }
 
 /* laoding screen */
 
-.loading-screen{
+.loading-screen {
   height: 25rem;
-  i{
+  i {
     color: var(--main-color);
     font-size: 5rem;
   }
@@ -340,20 +338,43 @@ cursor: pointer;
   padding-top: 20%;
 }
 
-.category-form{
-
-  input{
+.category-form {
+  input {
     background-color: #dfe0e0;
     border: none;
     outline: none;
     padding: 0.3rem;
-    padding-inline:1rem ;
+    padding-inline: 1rem;
     border-radius: 6px;
   }
-  Button{
+  Button {
     background-color: var(--main-color) !important;
-    padding-inline:1rem ;
+    padding-inline: 1rem;
     border: none;
-
   }
+}
+
+/* page selector */
+
+.pagination.page {
+
+  justify-content: center;
+  --bs-pagination-active-bg: var(--main-color);
+  --bs-pagination-active-border-color: var(--main-color);
+  --bs-pagination-focus-color: var(--main-color);
+  --bs-pagination-color: var(--main-color);
+  --bs-pagination-hover-color: var(--main-color);
+}
+
+.pagination  .dots a {
+  border-block: none;
+}
+.pagination  .dots1 a {
+  border: none;
+  font-weight: 700;
+}
+
+
+.pagination  a:focus {
+  box-shadow: none;
 }

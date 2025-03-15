@@ -13,7 +13,7 @@ export default function Header({ home, title, titleSpan }) {
         <h2 className="h1 ">
           {title}
           <span>     
-            {`${JSON.parse(localStorage.getItem("loginData"))?.userName} !`}
+            {`${JSON.parse(localStorage.getItem("loginData"))?.userName }  !`}
           </span>
         </h2>
         <p>

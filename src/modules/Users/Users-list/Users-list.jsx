@@ -11,21 +11,36 @@ import emptyImg from "./../../../assets/empty.jpg";
 import { notify } from "./../../../utils/notify";
 import LoadingScreen from "../../Shared/LoadingScreen/LoadingScreen";
 import DeleteConfermation from './../../Shared/Delete-confairmation/Delete-confairmation';
+import PageSelector from './../../Shared/pageSelector/pageSelector';
 
 export default function UsersList() {
   const [usersList, setUsersList] = useState([]);
   const [activeField, setActiveField] = useState("");
   const [isLoaded, setIsLoaded] = useState(false);
+  const [pageNumber, setPageNumber] = useState(1);
+    const [pageArray, setPageArray] = useState([]);
 
   const [showDeletionCard, setShowDeletionCard] = useState(false);
 
-  let getUsersList = async (pageSize, pageNumber) => {
+  let getUsersList = async ( pageNumber) => {
     try {
       let response = await privateAxiosInstance.get(
-        USERS_URLS.USERS_LIST(pageSize, pageNumber)
+        USERS_URLS.USERS_LIST,
+        {
+          params: {
+            pageSize: 6,
+            pageNumber: pageNumber,
+          },
+        }
       );
       setUsersList(response.data.data);
-    } catch (error) {
+      setPageArray(
+        Array.from(
+          { length: response.data.totalNumberOfPages },
+          (_, i) => i + 1
+        )
+      );
+    }catch (error) {
       console.log(error);
     }
     setIsLoaded(true)
@@ -43,14 +58,18 @@ export default function UsersList() {
       notify(error.response?.data?.message, "error");
     }
 
+    handleClose();
+    await getUsersList(pageNumber);
+  };
+
+  const handleClose = async () => {
     setActiveField(null);
-    await getUsersList(100, 3);
     setShowDeletionCard(false);
   };
 
   useEffect(() => {
-    getUsersList(100, 3); 
-  }, []);
+    getUsersList(pageNumber); 
+  }, [pageNumber]);
 
   let processUsers = async (userId, operation) => {
     try {
@@ -83,7 +102,7 @@ export default function UsersList() {
   }; //محتاج تعديل فيما بعد
 
   return (
-    <>
+    
       <div className="list">
         <Header title={"Users"} titleSpan={" List"}></Header>
         <SmallHeader Item={"users"}></SmallHeader>
@@ -108,6 +127,7 @@ export default function UsersList() {
     <Nodata />
     </>
   ) : (
+    <>
     <table className="table table-striped table-hover users-list ">
            <thead>
             <tr>
@@ -168,18 +188,24 @@ export default function UsersList() {
         ))}
       </tbody>
     </table>
+   <PageSelector pageNumber={pageNumber} setPageNumber={setPageNumber} pageArray={pageArray} ></PageSelector>
+   </>
   )
 ) : (
+
   <LoadingScreen />
 )}
 
     
         <DeleteConfermation
+         
           show={showDeletionCard}
-          setShow={setShowDeletionCard}
           deletionFunction={deleteUser}
+          handleClose={handleClose}
         ></DeleteConfermation>
+
+        
       </div>
-    </>
+    
   );
 }

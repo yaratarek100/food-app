@@ -14,7 +14,7 @@ export default function Masterlayout({loginData,saveLoginData}) {
 
       <Sidebar></Sidebar>
       </div>
-      <div className="mainDiv p-3" >
+      <div className="mainDiv p-3 position-relative" >
 <Navbar ></Navbar>
 <Outlet  ></Outlet>
       </div>

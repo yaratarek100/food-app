@@ -8,20 +8,29 @@ import emptyImg from './../../../assets/empty.jpg';
 import LoadingScreen from "../../Shared/LoadingScreen/LoadingScreen";
 import { notify } from "../../../utils/notify";
 import DeleteConfermation from "../../Shared/Delete-confairmation/Delete-confairmation";
+import PageSelector from './../../Shared/pageSelector/pageSelector';
 
 export default function RecipesList() {
   const [recipesList, setRecipesList] = useState([]);
     const [activeField, setActiveField] = useState("");
     const [isLoaded, setIsLoaded] = useState(false);
     const [showDeletionCard, setShowDeletionCard] = useState(false);
+    const [pageNumber, setPageNumber] = useState(1);
+      const [pageArray, setPageArray] = useState([]);
 
-  let getRecipesList = async (pageSize, pageNumber) => {
+  let getRecipesList = async(pageNumber) => {
     try {
       let response = await privateAxiosInstance.get(
-        RECIPES_URLS.RECIPES_LIST(pageSize, pageNumber)
-      );
+        RECIPES_URLS.RECIPES_LIST,{params:{
+          pageSize : 6,
+pageNumber :pageNumber
+        }}
+      )
+      
       setRecipesList(response.data.data);
-    } catch (error) {
+      setPageArray(        Array.from(          { length: response.data.totalNumberOfPages },          (_, i) => i + 1        ));
+    } 
+    catch (error) {
       console.log(error);
     }
     
@@ -70,14 +79,18 @@ export default function RecipesList() {
         notify(error.response?.data?.message, "error");
       }
   
+      await getRecipesList(pageNumber);
+      handleClose();
+
+    };
+
+    const handleClose = async () => {
       setActiveField(null);
-      await getRecipesList(50, 1);
       setShowDeletionCard(false);
     };
 
-
   useEffect(() => {
-    getRecipesList(50, 1);
+    getRecipesList(pageNumber);
   }, []);
 
   return (
@@ -178,9 +191,16 @@ export default function RecipesList() {
       }
       <DeleteConfermation
           show={showDeletionCard}
-          setShow={setShowDeletionCard}
           deletionFunction={deleteRecipe}
+          handleClose={handleClose}
         ></DeleteConfermation>
+
+       <PageSelector
+        pageNumber={pageNumber}
+        setPageNumber={setPageNumber}
+        pageArray={pageArray}
+
+      ></PageSelector>
     </div>
   );
 }

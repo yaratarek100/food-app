@@ -7,6 +7,7 @@ import DeleteConfermation from "../../Shared/Delete-confairmation/Delete-confair
 import LoadingScreen from "../../Shared/LoadingScreen/LoadingScreen";
 import { notify } from "../../../utils/notify";
 import CategoryForm from "../CategoryForm/CategoryForm";
+import PageSelector from "./../../Shared/pageSelector/pageSelector";
 
 export default function CategoriesList() {
   const [categoriesList, setCategoriesList] = useState([]);
@@ -15,13 +16,27 @@ export default function CategoriesList() {
   const [showDeletionCard, setShowDeletionCard] = useState(false);
   const [showCategoryForm, setShowCategoryForm] = useState(false);
   const [categoryName, setCategoryName] = useState("");
+  const [pageNumber, setPageNumber] = useState(1);
+  const [pageArray, setPageArray] = useState([]);
 
-  const getCategoriesList = async (pageSize, pageNumber) => {
+  const getCategoriesList = async (pageNumber) => {
     try {
       let response = await privateAxiosInstance.get(
-        CATEGORIES_URLS.CATEGORIES_LIST(pageSize, pageNumber)
+        CATEGORIES_URLS.CATEGORIES_LIST,
+        {
+          params: {
+            pageSize: 6,
+            pageNumber: pageNumber,
+          },
+        }
       );
       setCategoriesList(response.data.data);
+      setPageArray(
+        Array.from(
+          { length: response.data.totalNumberOfPages },
+          (_, i) => i + 1
+        )
+      );
     } catch (error) {
       console.log(error);
     }
@@ -29,7 +44,11 @@ export default function CategoriesList() {
     setIsLoaded(true);
   };
 
-// let processCategory = async (categoryId, operation) => {
+  // useEffect(() => {
+  //   console.log(pageArray);
+  // }, [pageArray]);
+
+  // let processCategory = async (categoryId, operation) => {
   //   try {
   //     let response;
   //     switch (operation.toLowerCase()) {
@@ -51,14 +70,13 @@ export default function CategoriesList() {
 
   const deleteCategory = async () => {
     try {
-      await privateAxiosInstance.delete(
-        CATEGORIES_URLS.CATEGORY(activeField)
-      );
+      await privateAxiosInstance.delete(CATEGORIES_URLS.CATEGORY(activeField));
       notify("category was deleted successfully", "success");
     } catch (error) {
       console.log(error);
       notify(error.response?.data?.message, "error");
     }
+    await getCategoriesList(pageNumber);
 
     handleClose();
   };
@@ -74,6 +92,8 @@ export default function CategoriesList() {
       console.log(error);
       notify(error.response?.data?.message, "error");
     }
+    await getCategoriesList(pageNumber);
+
     handleClose();
   };
 
@@ -84,29 +104,33 @@ export default function CategoriesList() {
         data
       );
       notify("category was edited successfully", "success");
-    } catch (error) {
+    }
+     catch (error) {
       console.log(error);
       notify(error.response?.data?.message, "error");
     }
+    await getCategoriesList(pageNumber);
     handleClose();
   };
 
   const handleClose = async () => {
     setActiveField(null);
-    await getCategoriesList(50, 1);
     setShowDeletionCard(false);
     setShowCategoryForm(false);
     setCategoryName(null);
   };
 
   useEffect(() => {
-    getCategoriesList(10, 1);
-  }, []);
+    getCategoriesList(pageNumber);
+  }, [pageNumber]);
 
   return (
     <div className="list">
       <Header title={"Categories"} titleSpan={" Items"}></Header>
-      <SmallHeader Item={"Category"} setShow={setShowCategoryForm}></SmallHeader>
+      <SmallHeader
+        Item={"Category"}
+        setShow={setShowCategoryForm}
+      ></SmallHeader>
 
       {isLoaded ? (
         categoriesList.length === 0 ? (
@@ -122,6 +146,7 @@ export default function CategoriesList() {
             <Nodata />
           </>
         ) : (
+              <>
           <table className="table table-striped table-hover categories-list">
             <thead>
               <tr>
@@ -143,16 +168,19 @@ export default function CategoriesList() {
                       }}
                     ></i>
 
-                    <div className={`start-0 ${activeField === item.id ? "active-field" : ""}`}>
-
-                    <button
-                      className="btn  text-secondary  rounded-0 "
-                      onClick={() => {
-                        processRecipe(item?.id, "get");
-                      }}
+                    <div
+                      className={`start-0 ${
+                        activeField === item.id ? "active-field" : ""
+                      }`}
                     >
-                      <i className="fa-regular fa-eye"></i> View
-                    </button> 
+                      <button
+                        className="btn  text-secondary  rounded-0 "
+                        onClick={() => {
+                          processRecipe(item?.id, "get");
+                        }}
+                      >
+                        <i className="fa-regular fa-eye"></i> View
+                      </button>
                       <button
                         className="btn text-secondary rounded-0"
                         onClick={() => {
@@ -176,6 +204,12 @@ export default function CategoriesList() {
               ))}
             </tbody>
           </table>
+            <PageSelector
+            pageNumber={pageNumber}
+            setPageNumber={setPageNumber}
+            pageArray={pageArray}
+          ></PageSelector>
+          </>
         )
       ) : (
         <LoadingScreen />
@@ -194,6 +228,8 @@ export default function CategoriesList() {
         deletionFunction={deleteCategory}
         handleClose={handleClose}
       />
+
+    
     </div>
   );
 }
