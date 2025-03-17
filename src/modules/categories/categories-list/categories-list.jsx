@@ -20,11 +20,6 @@ export default function CategoriesList() {
   const [pageArray, setPageArray] = useState([]);
   const [nameFilter, setNameFilter] = useState("");
 
-
-
- 
-
-
   const getCategoriesList = async (nameFilter, pageNumber) => {
     try {
       let response = await privateAxiosInstance.get(
@@ -99,6 +94,7 @@ export default function CategoriesList() {
       console.log(error);
       notify(error.response?.data?.message, "error");
     }
+
     await getCategoriesList(pageNumber);
 
     handleClose();
@@ -130,11 +126,9 @@ export default function CategoriesList() {
     getCategoriesList(pageNumber);
   }, [pageNumber]);
 
-  
-    useEffect(() => {
-      getCategoriesList(nameFilter, pageNumber);
-    }, [pageNumber, nameFilter]);
-  
+  useEffect(() => {
+    getCategoriesList(nameFilter, pageNumber);
+  }, [pageNumber, nameFilter]);
 
   return (
     <div className="list">

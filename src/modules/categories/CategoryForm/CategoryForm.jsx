@@ -2,8 +2,6 @@ import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import { CATEGORIES_URLS, privateAxiosInstance } from "../../../services/urls";
-import { notify } from "../../../utils/notify";
 
 export default function CategoryForm({
   show,

@@ -1,19 +1,50 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import FillRecipes from "../../Shared/FillRecipes/FillRecipes";
 import { useForm } from "react-hook-form";
 
 import Form from "react-bootstrap/Form";
+
 import {
   CATEGORIES_URLS,
   privateAxiosInstance,
+  RECIPES_URLS,
   TAGS,
 } from "../../../services/urls";
+import { notify } from "../../../utils/notify";
 
 export default function RecipesData() {
   const [tags, setTags] = useState([]);
   const [categories, setCategories] = useState([]);
 
+  const navigate = useNavigate();
+
+  let addNewRecipe = async (data) => {
+    try {
+      let response = await privateAxiosInstance.post(
+        RECIPES_URLS.ADD_RECIPE,
+        data
+      );
+      notify("Recipe was added successfully", "success");
+      navigate("/dashboard/recipes-list");
+    } catch (error) {
+      console.log(error);
+      notify(error.response?.data?.message, "error");
+    }
+  };
+  let editRecipe = async (data) => {
+    try {
+      let response = await privateAxiosInstance.put(
+        RECIPES_URLS.RECIPE(id),
+        data
+      );
+      notify("Recipe was edited successfully", "success");
+      navigate("/dashboard/recipes-list");
+    } catch (error) {
+      console.log(error);
+      notify(error.response?.data?.message, "error");
+    }
+  };
   let getCategories = async () => {
     try {
       let response = await privateAxiosInstance.get(
@@ -33,19 +64,44 @@ export default function RecipesData() {
     }
   };
 
-  // let processRecipe = async (RecipeId, operation) => {
-  // response = await privateAxiosInstance.get(
-    //           RECIPES_URLS.RECIPE(RecipeId)
-    //         );
-    //         console.log(response.data);
+  let getRecipe = async (RecipeId) => {
+    try {
+      let response = await privateAxiosInstance.get(
+        RECIPES_URLS.RECIPE(RecipeId)
+      );
+      const recipeData = response?.data;
+      setValue("name", recipeData?.name);
+      setValue("price", recipeData?.price);
+      setValue("tagId", recipeData?.tag?.id);
+      setValue("categoriesIds", String(recipeData?.category[0]?.id));
+      setValue("description", recipeData?.description);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const { id } = useParams();
 
   useEffect(() => {
     getCategories();
     getTags();
-  }, []);
+    if (id) {
+      getRecipe(id);
+    }
+  }, [, id]);
 
   const onSubmit = (data) => {
-    console.log(data);
+    const formData = new FormData();
+
+    for (let key in data) {
+      formData.append(key, key === "recipeImage" ? data[key][0] : data[key]);
+    }
+
+    if (id) {
+      editRecipe(formData);
+    } else {
+      addNewRecipe(formData);
+    }
   };
   const {
     register,
@@ -53,24 +109,14 @@ export default function RecipesData() {
     handleSubmit,
     setValue,
   } = useForm({
-    // defaultValues: { name: "" },
     mode: "onChange",
   });
-
-  const currentPath = window.location.pathname;
-  if (!currentPath.endsWith("recipe-data")) {
-    const { id } = useParams();
-    console.log(id);
-  }
 
   return (
     <>
       <FillRecipes />
       <div className="recipe-data">
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="text-center"
-        >
+        <form onSubmit={handleSubmit(onSubmit)} className="text-center" encType="multipart/form-data">
           <input
             type="text"
             className="d-block mx-auto w-75 "
@@ -87,13 +133,12 @@ export default function RecipesData() {
             placeholder="Price"
             {...register("price", { required: "price is required" })}
           />
-          {errors.name && (
+          {errors.price && (
             <span className="text-danger">{errors.price.message}</span>
           )}
 
           <Form.Select
             aria-label="Default select example"
-            onChange={(e) => setTagFilter(e.target.value)}
             className="d-block mx-auto w-75 "
             placeholder="Tag"
             {...register("tagId", { required: "Tag is required" })}
@@ -105,14 +150,13 @@ export default function RecipesData() {
               </option>
             ))}
           </Form.Select>
-          {errors.name && (
+          {errors.tagId && (
             <span className="text-danger">{errors.tagId.message}</span>
           )}
 
           <Form.Select
             aria-label="Default select example"
             className="d-block mx-auto w-75 "
-            onChange={(e) => setCategoryFilter(e.target.value)}
             {...register("categoriesIds")}
           >
             <option value="">category</option>
@@ -130,7 +174,7 @@ export default function RecipesData() {
               required: "Description is required",
             })}
           />
-          {errors.name && (
+          {errors.description && (
             <span className="text-danger">{errors.description.message}</span>
           )}
 
