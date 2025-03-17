@@ -91,6 +91,7 @@ export default function RecipesData() {
   }, [, id]);
 
   const onSubmit = (data) => {
+    console.log(data);
     const formData = new FormData();
 
     for (let key in data) {
