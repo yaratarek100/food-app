@@ -18,13 +18,20 @@ export default function CategoriesList() {
   const [categoryName, setCategoryName] = useState("");
   const [pageNumber, setPageNumber] = useState(1);
   const [pageArray, setPageArray] = useState([]);
+  const [nameFilter, setNameFilter] = useState("");
 
-  const getCategoriesList = async (pageNumber) => {
+
+
+ 
+
+
+  const getCategoriesList = async (nameFilter, pageNumber) => {
     try {
       let response = await privateAxiosInstance.get(
         CATEGORIES_URLS.CATEGORIES_LIST,
         {
           params: {
+            name: nameFilter,
             pageSize: 6,
             pageNumber: pageNumber,
           },
@@ -104,8 +111,7 @@ export default function CategoriesList() {
         data
       );
       notify("category was edited successfully", "success");
-    }
-     catch (error) {
+    } catch (error) {
       console.log(error);
       notify(error.response?.data?.message, "error");
     }
@@ -124,6 +130,12 @@ export default function CategoriesList() {
     getCategoriesList(pageNumber);
   }, [pageNumber]);
 
+  
+    useEffect(() => {
+      getCategoriesList(nameFilter, pageNumber);
+    }, [pageNumber, nameFilter]);
+  
+
   return (
     <div className="list">
       <Header title={"Categories"} titleSpan={" Items"}></Header>
@@ -131,6 +143,18 @@ export default function CategoriesList() {
         Item={"Category"}
         setShow={setShowCategoryForm}
       ></SmallHeader>
+
+      <div className="search-bar my-4">
+        <div className="position-relative w-50 mx-2">
+          <i className="fa-solid fa-magnifying-glass position-absolute "></i>
+          <input
+            className="form-control px-5"
+            type="search"
+            placeholder="Search here ..."
+            onChange={(e) => setNameFilter(e.target.value)}
+          />
+        </div>
+      </div>
 
       {isLoaded ? (
         categoriesList.length === 0 ? (
@@ -146,69 +170,69 @@ export default function CategoriesList() {
             <Nodata />
           </>
         ) : (
-              <>
-          <table className="table table-striped table-hover categories-list">
-            <thead>
-              <tr>
-                <th scope="col">Name</th>
-                <th scope="col">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {categoriesList.map((item) => (
-                <tr key={item.id}>
-                  <td>{item.name}</td>
-                  <td className="position-relative">
-                    <i
-                      className="fa fa-ellipsis-h"
-                      onClick={() => {
-                        setActiveField(
-                          activeField === item.id ? null : item.id
-                        );
-                      }}
-                    ></i>
-
-                    <div
-                      className={`start-0 ${
-                        activeField === item.id ? "active-field" : ""
-                      }`}
-                    >
-                      <button
-                        className="btn  text-secondary  rounded-0 "
-                        onClick={() => {
-                          processRecipe(item?.id, "get");
-                        }}
-                      >
-                        <i className="fa-regular fa-eye"></i> View
-                      </button>
-                      <button
-                        className="btn text-secondary rounded-0"
-                        onClick={() => {
-                          setCategoryName(item.name);
-                          setShowCategoryForm(true);
-                        }}
-                      >
-                        <i className="fa fa-edit"></i> Edit
-                      </button>
-                      <button
-                        className="btn text-secondary rounded-0"
-                        onClick={() => {
-                          setShowDeletionCard(true);
-                        }}
-                      >
-                        <i className="fa-solid fa-trash"></i> Delete
-                      </button>
-                    </div>
-                  </td>
+          <>
+            <table className="table table-striped table-hover categories-list">
+              <thead>
+                <tr>
+                  <th scope="col">Name</th>
+                  <th scope="col">Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {categoriesList.map((item) => (
+                  <tr key={item.id}>
+                    <td>{item.name}</td>
+                    <td className="position-relative">
+                      <i
+                        className="fa fa-ellipsis-h"
+                        onClick={() => {
+                          setActiveField(
+                            activeField === item.id ? null : item.id
+                          );
+                        }}
+                      ></i>
+
+                      <div
+                        className={`start-0 ${
+                          activeField === item.id ? "active-field" : ""
+                        }`}
+                      >
+                        <button
+                          className="btn  text-secondary  rounded-0 "
+                          onClick={() => {
+                            processRecipe(item?.id, "get");
+                          }}
+                        >
+                          <i className="fa-regular fa-eye"></i> View
+                        </button>
+                        <button
+                          className="btn text-secondary rounded-0"
+                          onClick={() => {
+                            setCategoryName(item.name);
+                            setShowCategoryForm(true);
+                          }}
+                        >
+                          <i className="fa fa-edit"></i> Edit
+                        </button>
+                        <button
+                          className="btn text-secondary rounded-0"
+                          onClick={() => {
+                            setShowDeletionCard(true);
+                          }}
+                        >
+                          <i className="fa-solid fa-trash"></i> Delete
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
             <PageSelector
-            pageNumber={pageNumber}
-            setPageNumber={setPageNumber}
-            pageArray={pageArray}
-          ></PageSelector>
+              pageNumber={pageNumber}
+              setPageNumber={setPageNumber}
+              pageArray={pageArray}
+            ></PageSelector>
           </>
         )
       ) : (
@@ -228,8 +252,6 @@ export default function CategoriesList() {
         deletionFunction={deleteCategory}
         handleClose={handleClose}
       />
-
-    
     </div>
   );
 }

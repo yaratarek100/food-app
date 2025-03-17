@@ -36,7 +36,7 @@ export default function Navbar() {
               </li>
               <li className="nav-item mx-2">
                 <a className="nav-link position-relative"  href="#">
-                  <div id="bell">     </div>
+                  <div id="bell d-none">     </div>
                 <i className="fa-solid fa-bell " id="bell-d"></i>
                 </a>
               </li>

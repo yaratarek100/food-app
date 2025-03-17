@@ -3,12 +3,13 @@ import axios from "axios";
 export const baseUrl = "https://upskilling-egypt.com:3006/api/v1";
 export const imgBaseUrl = "https://upskilling-egypt.com:3006/";
 
+
 export const publicAxiosInstance = axios.create({
-   baseURL: baseUrl, 
-  });
+  baseURL: baseUrl, 
+});
 export const privateAxiosInstance = axios.create({
-   baseURL: baseUrl, 
-   headers :{Authorization : localStorage.getItem("token")}
+  baseURL: baseUrl, 
+  headers :{Authorization : localStorage.getItem("token")}
   });
 
 export const USER_URLS = {
@@ -25,6 +26,7 @@ export const CATEGORIES_URLS = {
   CATEGORY : (id)=> `/Category/${id}`,
   ADD_CATEGORY : "/Category/",
 };
+export const TAGS = "/tag/";
 
 export const RECIPES_URLS = {
   RECIPES_LIST :  `/Recipe/`,
@@ -36,3 +38,5 @@ export const USERS_URLS = {
   USERS : (id)=> `/Users/${id}`,
   ADD_USER : "/Users/",
 };
+
+

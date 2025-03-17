@@ -12,11 +12,9 @@ import Masterlayout from "./modules/Shared/Masterlayout/Masterlayout";
 import RecipesList from "./modules/Recipes/Recipes-list/Recipes-list.jsx";
 import RecipesData from "./modules/Recipes/Recipes-data/Recipes-data";
 import CategoriesList from "./modules/categories/categories-list/categories-list";
-import CategoriesData from "./modules/categories/categories-data/categories-data";
 import UsersList from "./modules/Users/Users-list/Users-list";
 import ProtectedRoute from "./modules/Shared/protectedRoute/protectedRoute.jsx";
 import { LoginDataProvider } from "./context/LoginDataContext.jsx";
-import ChangePassword from "./modules/Auth/change-password/change-password.jsx";
 
 function App() {
   // const [loginData, setLoginData] = useState({});
@@ -61,8 +59,8 @@ function App() {
 
         { path: "recipes-list", element: <RecipesList></RecipesList> },
         { path: "recipe-data", element: <RecipesData></RecipesData> },
+        { path: "recipe/:id", element: <RecipesData></RecipesData> },
         { path: "categories-list", element: <CategoriesList></CategoriesList> },
-        { path: "category-data", element: <CategoriesData></CategoriesData> },
         { path: "users-list", element: <UsersList></UsersList> },
       ],
     },

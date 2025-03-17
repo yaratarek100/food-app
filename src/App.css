@@ -162,7 +162,7 @@ body {
 }
 /* lists */
 .list .table {
-  min-height: 30rem;
+  /* min-height: 30rem; */
 }
 
 .table-striped > tbody td {
@@ -377,4 +377,36 @@ padding: 3px;
 
 .pagination  a:focus {
   box-shadow: none;
+}
+
+/* recipe-data-form */
+
+.recipe-data form {
+  
+}
+
+/* search-bar */
+.search-bar {
+  margin-block:0.7rem ;
+  display: flex;
+  justify-content: space-between;
+  /* gap: 2%; */
+}
+.search-bar input , .search-bar .drop{
+  flex-grow: 1;
+  margin-inline:0.5% ;
+border-color: #A3A9B6;
+border-style: solid;
+color: #A3A9B6;
+border-radius: 5px;
+padding: 0.2rem;
+padding-inline:0.7rem ;
+border-width: 0.1rem;
+
+}
+
+.search-bar .fa-magnifying-glass{
+  top:20%;
+  left: 3%;
+  color:#A3A9B6;
 }

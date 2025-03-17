@@ -26,6 +26,7 @@ function AdvancedExample({ pageNumber, setPageNumber, pageArray }) {
         <Pagination.Ellipsis className={pageNumber <= 3 ? `d-none dots` : ` dots`} />
 
         {pageArray.map((page) => (
+          
           <Pagination.Item
             key={page}
             onClick={() => {
@@ -40,7 +41,7 @@ function AdvancedExample({ pageNumber, setPageNumber, pageArray }) {
 
         <Pagination.Ellipsis className={pageNumber >= pageArray.length-2 ? `d-none dots` : ` dots`}/>
         <Pagination.Item
-          key={pageArray.length}
+          key={pageArray.length+1}
           onClick={() => {
             setPageNumber(pageArray.length);
           }}
