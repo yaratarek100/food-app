@@ -91,7 +91,6 @@ export default function RecipesData() {
   }, [, id]);
 
   const onSubmit = (data) => {
-    console.log(data);
     const formData = new FormData();
 
     for (let key in data) {
@@ -118,9 +117,10 @@ export default function RecipesData() {
       <FillRecipes />
       <div className="recipe-data">
         <form onSubmit={handleSubmit(onSubmit)} className="text-center" encType="multipart/form-data">
+
           <input
             type="text"
-            className="d-block mx-auto w-75 "
+            className="data-input"
             placeholder="Recipe Name"
             {...register("name", { required: "recipe name is required" })}
           />
@@ -130,7 +130,7 @@ export default function RecipesData() {
 
           <input
             type="number"
-            className="d-block mx-auto w-75 "
+            className="data-input"
             placeholder="Price"
             {...register("price", { required: "price is required" })}
           />
@@ -140,7 +140,7 @@ export default function RecipesData() {
 
           <Form.Select
             aria-label="Default select example"
-            className="d-block mx-auto w-75 "
+            className="data-input"
             placeholder="Tag"
             {...register("tagId", { required: "Tag is required" })}
           >
@@ -157,7 +157,7 @@ export default function RecipesData() {
 
           <Form.Select
             aria-label="Default select example"
-            className="d-block mx-auto w-75 "
+            className="data-input"
             {...register("categoriesIds")}
           >
             <option value="">category</option>
@@ -169,7 +169,7 @@ export default function RecipesData() {
           </Form.Select>
 
           <textarea
-            className="d-block mx-auto w-75 "
+            className="data-input"
             placeholder="Description"
             {...register("description", {
               required: "Description is required",
@@ -178,23 +178,38 @@ export default function RecipesData() {
           {errors.description && (
             <span className="text-danger">{errors.description.message}</span>
           )}
-
-          <input
+<div className="img-input data-input">
+  <input
             type="file"
-            className="d-block mx-auto w-75 "
-            placeholder="Recipe Image"
+            id="recipeImage"
+            className="d-none"
             {
               ...register("recipeImage") //
             }
           />
+          <label htmlFor="recipeImage">
+            <i className="fa fa-upload d-block" ></i>
+          Drag & Drop or<span> Choose a Item Image </span>to Upload
+          </label>
+</div>
+          
 
-          <button className="btn" type="submit">
+
+<div className="form-footer d-flex justify-content-end p-5  gap-3 ">
+
+    <button  type="submit" className="btn btn-outline-success" >
+          
+           cancel
+          </button>
+    <button  type="submit" className="btn btn-success">
             {isSubmitting ? (
               <i className="fa-solid fa-spinner fa-spin"></i>
             ) : (
               "save"
             )}
           </button>
+  </div>
+        
         </form>
       </div>
     </>

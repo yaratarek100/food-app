@@ -379,11 +379,7 @@ padding: 3px;
   box-shadow: none;
 }
 
-/* recipe-data-form */
 
-.recipe-data form {
-  
-}
 
 /* search-bar */
 .search-bar {
@@ -409,4 +405,66 @@ border-width: 0.1rem;
   top:20%;
   left: 3%;
   color:#A3A9B6;
+}
+
+/* recipe-data-form */
+
+.recipe-data form{
+   display: flex;
+   flex-direction: column;
+   margin-inline: auto;
+   align-items: center;
+   gap: 15px;
+   margin-block:50px ;
+   
+   
+}
+.recipe-data form .data-input{
+   display: block;
+   width: 90%;
+   background-color: #F7F7F7;
+border-radius: 12px;
+border: none;
+padding-inline: 4%;
+padding-block: 1%;
+font-weight: 500;
+font-size: 15px;
+color: #1F263E;
+}
+.recipe-data form .data-input:focus{
+  box-shadow: 0 0 0 .2rem #4aa35a50 !important;
+  border-color: #4aa35ab2 !important;
+  border: none;
+ outline: none;
+}
+
+.recipe-data form .img-input{
+  background-color: #F1FFF0 !important ;
+  border: dashed 2px var(--main-color) ;
+  padding: 1rem;
+ 
+
+}
+
+.recipe-data form .img-input i{
+  font-size: 1.8rem;
+  margin-block: 0.5rem;
+  padding-inline: 1rem;
+  margin-inline:auto ;
+  cursor: pointer;
+  width: fit-content;
+  
+  
+}
+.recipe-data form .img-input span{
+  color: var(--main-color);
+  margin-block: 1rem;
+
+}
+
+.recipe-data form .form-footer{
+  border-top: solid 2px #F7F7F7;
+  width: 100%;
+  margin-top: 3%;
+
 }
