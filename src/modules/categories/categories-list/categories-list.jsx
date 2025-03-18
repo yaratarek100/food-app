@@ -178,7 +178,7 @@ export default function CategoriesList() {
                     <td>{item.name}</td>
                     <td className="position-relative">
                       <i
-                        className="fa fa-ellipsis-h"
+                        className="fa fa-ellipsis-h "
                         onClick={() => {
                           setActiveField(
                             activeField === item.id ? null : item.id

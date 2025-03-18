@@ -160,9 +160,10 @@ body {
   background-color: var(--main-color);
   font-weight: 600;
 }
-/* lists */
+/* lists  */
 .list .table {
   /* min-height: 30rem; */
+
 }
 
 .table-striped > tbody td {
@@ -173,17 +174,39 @@ body {
 }
 .table > thead {
   vertical-align: middle;
-  background-color: #e2e5eb !important;
+  --bs-table-bg:  #e2e5eb ;}
+
+  .table > thead tr th{
+  padding-block:1.3rem ;
+  border-bottom: none;
+}
+  .table > thead tr :first-child{
+ border-top-left-radius:20px ;
+ border-bottom-left-radius:20px ;
+ padding-left: 20px;
+}
+  .table > thead tr :last-child{
+ border-top-right-radius:20px ;
+ border-bottom-right-radius:20px ;
+ padding-right: 20px;
 }
 
-.table-striped > tbody > tr:nth-of-type(odd) > * {
+.categories-list tr :last-child{
+  padding-right: 5%;
+  text-align: end;
+}
+
+
+
+.table-striped > tbody > tr > * {
   --bs-table-color-type: #3a3a3d !important;
+}
+.table-striped > tbody > tr:nth-of-type(even) > * {
   --bs-table-bg-type: #f8f9fb !important;
 }
 
 .table-striped > tbody > tr:nth-of-type(odd) > * {
-  /* --bs-table-color-type: #3A3A3D !important;
-  --bs-table-bg-type: #F8F9FB !important; */
+  --bs-table-bg-type: white !important;
 }
 
 .list td.position-relative i {

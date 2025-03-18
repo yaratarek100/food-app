@@ -173,7 +173,7 @@ export default function RecipesList() {
           </>
         ) : (
           <table className="table table-striped table-hover recipes-list ">
-            <thead>
+                  <thead>
               <tr>
                 <th scope="col">Name</th>
                 <th scope="col">Image</th>
@@ -184,6 +184,9 @@ export default function RecipesList() {
                 <th scope="col">Actions</th>
               </tr>
             </thead>
+            {/* //عايزة ادي ال style ده لل thead {  padding-block:0.5rem ;
+  border-radius: 15px;}وطبعا مش هينفع بسبب ال display بس لما بعمل display blovk  مقاسات ال sells جوا ال جدول مبتبقاش متناسقة مع المقاسات في الtbody // */}
+        
 
             <tbody className="">
               {recipesList.map((item) => (
