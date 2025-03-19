@@ -17,8 +17,8 @@ export default function Authlayout() {
   return (
     <div className={`${isRegister? "register" : ""} auth-container `}>
       <div className=" container-fluid bg-layer h-100">
-        <div className="row w-100 h-100 justify-content-center align-items-center">
-          <div className= {`${isRegister? "col-md-7":"col-md-5"}  bg-white  rounded-5 text-center p-3 mt-5`}>
+        <div className="row w-100 justify-content-center align-items-center">
+          <div className= {`${isRegister? "col-10 col-md-9 col-lg-8 col-xl-6 ":"col-md-7 col-lg-6 col-xl-5"}  bg-white  rounded-5 text-center p-3 mt-5`}>
             <div className="logo w-50 mx-auto">
               <img src={logo} alt="" className="w-100" />
             </div>

@@ -2,7 +2,7 @@ import React, {  useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { notify } from "./../../../utils/notify";
-import { EMAIL_VALIDATION, NEW_PASSWORD_VALIDATION } from "./../../../services/validations";
+import { EMAIL_VALIDATION, NEW_PASSWORD_VALIDATION, USER_NAME_VALIDATION } from "./../../../services/validations";
 import { publicAxiosInstance, USER_URLS } from './../../../services/urls';
 
 export default function Signup() {
@@ -61,18 +61,18 @@ export default function Signup() {
         </p>
       </div>
       <form action="" className="text-start registration-form " onSubmit={handleSubmit(onSubmit)}>
-        <div className="inner-div d-flex gap-5 mb-3 mt-5 w-100">
-          <div className="left-side w-50 px-1">
+        <div className="inner-div d-flex  flex-column flex-md-row gap-0 gap-md-4 mb-3 mt-5 w-100 align-items-center ">
+          <div className="left side w-100 px-1">
             <div className="input-group mb-3 border ">
               <span className="input-group-text border-0 ">
                 <i className="fa-solid fa-user border-end border-2 pe-2"></i>
               </span>
               <input
                 type="text"
-                {...register("userName", {required: "user name is required" })}
+                {...register("userName",USER_NAME_VALIDATION)}
                 className="form-control border-0 shadow-none"
                 id="floatingInputGroup1"
-                autocomplete="new-password"
+                autoComplete="new-password"
                 placeholder="userName"
               />
             </div>
@@ -106,7 +106,7 @@ export default function Signup() {
                 className="form-control border-0 shadow-none"
                 id="floatingInputGroup1"
                 placeholder="Password"
-                autocomplete="new-password"
+                autoComplete="new-password"
               />
               <button
                 type="button"
@@ -126,7 +126,7 @@ export default function Signup() {
             )}
           </div>
 
-          <div className="right-side w-50 px-1">
+          <div className="right side w-100 px-1">
             <div className="input-group mb-3 border ">
               <span className="input-group-text border-0 ">
                 <i className="fa-solid fa-envelope border-end border-2 pe-2"></i>

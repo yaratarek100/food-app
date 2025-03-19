@@ -10,7 +10,7 @@ body {
 /* auth layout */
 
 .auth-container {
-  height: 100vh;
+  min-height: 100vh;
   background-image:url(../src/assets/ella-olsson-C1Q3qOTlegg-unsplash1.jpg);
   background-size: cover;
   background-position: center;
@@ -23,6 +23,16 @@ body {
 .register{
   background-image: none;
 }
+@media (min-width: 768px) {
+  .register .side {
+    width: 50%; 
+  }
+}
+
+.register .input-group{
+  width:  95%;
+  margin-inline: auto;
+}
 
 .bg-layer {
   background: linear-gradient(
@@ -30,6 +40,10 @@ body {
     rgba(46, 140, 51, 0.6),
     rgba(0, 0, 0, 0.6)
   );
+}
+.bg-layer .row {
+  min-height: 100vh;
+  margin-inline:auto ;
 }
 
 /* login */
