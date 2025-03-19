@@ -39,6 +39,7 @@ export default function Signin() {
      
       saveLoginData();
     } catch (error) {
+      console.log(error);
       notify(error.response?.data?.message, "error");
     }
   };

@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { notify } from "./../../../utils/notify";
 import {  privateAxiosInstance, USER_URLS } from "../../../services/urls";
 import logo from "../../../assets/4 4.png";
+import { NEW_PASSWORD_VALIDATION } from "../../../services/validations";
 
 
 export default function ChangePassword({show, setShow}) {
@@ -119,22 +120,8 @@ export default function ChangePassword({show, setShow}) {
           </span>
             <input
                type={showNewPassword ? "text" : "password"}
-              {...register("newPassword", {
-                required: "Password is required",
-                validate: (value) => {
-                  if (value.length < 6)
-                    return "Password must be at least 6 characters long.";
-                  if (!/[a-z]/.test(value))
-                    return "Password must include at least one lowercase letter.";
-                  if (!/[A-Z]/.test(value))
-                    return "Password must include at least one uppercase letter.";
-                  if (!/\d/.test(value))
-                    return "Password must include at least one digit.";
-                  if (!/[\W_]/.test(value))
-                    return "Password must include at least one special character.";
-                  return true;
-                },
-              })}
+              {...register("newPassword", NEW_PASSWORD_VALIDATION
+            )}
               className="form-control border-0 shadow-none"
               id="floatingInputGroup1"
               placeholder="New Password"

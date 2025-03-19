@@ -2,17 +2,16 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { notify } from "./../../../utils/notify";
-import {  publicAxiosInstance, USER_URLS } from "../../../services/urls";
-import { EMAIL_VALIDATION } from "../../../services/validations";
+import { publicAxiosInstance, USER_URLS } from "../../../services/urls";
+import { EMAIL_VALIDATION, NEW_PASSWORD_VALIDATION } from "../../../services/validations";
 
 export default function ResetPassword() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [showRePassword, setShowRePassword] = useState(false);
 
-   const location = useLocation()
-    let userEmail = location.state?.email 
-  
+  const location = useLocation();
+  let userEmail = location.state?.email;
 
   const togglePasswordVisibility = () => {
     setShowPassword((prev) => !prev);
@@ -23,33 +22,26 @@ export default function ResetPassword() {
 
   let {
     register,
-    formState: { errors,isSubmitting },
+    formState: { errors, isSubmitting },
     handleSubmit,
     watch,
-    trigger
-   
-  } = useForm(
-    {defaultValues : {email :userEmail} },
-    {mode :"onChange"});
-  
-    const password = watch("confirmPassword")
-    const confirmPassword = watch("password")
+    trigger,
+  } = useForm({ defaultValues: { email: userEmail } }, { mode: "onChange" });
 
-    useEffect(()=>{
-        
-        if(confirmPassword)
-          {trigger("confirmPassword")}
-    
-      },[password,confirmPassword,trigger])
+  const password = watch("confirmPassword");
+  const confirmPassword = watch("password");
+
+  useEffect(() => {
+    if (confirmPassword) {
+      trigger("confirmPassword");
+    }
+  }, [password, confirmPassword, trigger]);
 
   const onSubmit = async (data) => {
     try {
-      let response = await publicAxiosInstance.post(
-        USER_URLS.RESET_PASS,
-        data
-      );
+      let response = await publicAxiosInstance.post(USER_URLS.RESET_PASS, data);
       notify(response.data.message, "success");
-      navigate("/" );
+      navigate("/");
     } catch (error) {
       notify(error.response.data.message, "error");
     }
@@ -101,40 +93,23 @@ export default function ResetPassword() {
           <span className="input-group-text border-0 ">
             <i className="fa-solid fa-lock border-end border-2 pe-2"></i>
           </span>
-            <input
-               type={showPassword ? "text" : "password"}
-              {...register("password", {
-                required: "Password is required",
-                validate: (value) => {
-                  if (value.length < 6)
-                    return "Password must be at least 6 characters long.";
-                  if (!/[a-z]/.test(value))
-                    return "Password must include at least one lowercase letter.";
-                  if (!/[A-Z]/.test(value))
-                    return "Password must include at least one uppercase letter.";
-                  if (!/\d/.test(value))
-                    return "Password must include at least one digit.";
-                  if (!/[\W_]/.test(value))
-                    return "Password must include at least one special character.";
-                  return true;
-                },
-              })}
-              className="form-control border-0 shadow-none"
-              id="floatingInputGroup1"
-              placeholder="password"
-            />
-            <button
-              type="button"
-              className=" border-0 px-3"
-              onClick={togglePasswordVisibility}
-              aria-label={showPassword ? "Hide password" : "Show password"}
-            >
-              <i
-                className={`fa-solid ${
-                  showPassword ? "fa-eye-slash" : "fa-eye"
-                }`}
-              ></i>
-            </button>
+          <input
+            type={showPassword ? "text" : "password"}
+            {...register("password",NEW_PASSWORD_VALIDATION)}
+            className="form-control border-0 shadow-none"
+            id="floatingInputGroup1"
+            placeholder="password"
+          />
+          <button
+            type="button"
+            className=" border-0 px-3"
+            onClick={togglePasswordVisibility}
+            aria-label={showPassword ? "Hide password" : "Show password"}
+          >
+            <i
+              className={`fa-solid ${showPassword ? "fa-eye-slash" : "fa-eye"}`}
+            ></i>
+          </button>
         </div>
         {errors.password && (
           <span className="text-danger"> {errors.password.message}</span>
@@ -145,31 +120,29 @@ export default function ResetPassword() {
             <i className="fa-solid fa-lock border-end border-2 pe-2"></i>
           </span>
           <input
-             type={showRePassword ? "text" : "password"}
+            type={showRePassword ? "text" : "password"}
             {...register("confirmPassword", {
               required: "Confirm Password is required",
 
-
-
               validate: (value) =>
-              (value === watch("password")|| "Passwords do not match"),
+                value === watch("password") || "Passwords do not match",
             })}
             className="form-control shadow-none border-0"
             id="floatingInputGroup1"
             placeholder="confirm password"
           />
           <button
-              type="button"
-              className=" border-0 px-3"
-              onClick={togglePasswordVisibility2}
-              aria-label={showRePassword ? "Hide password" : "Show password"}
-            >
-              <i
-                className={`fa-solid ${
-                  showRePassword ? "fa-eye-slash" : "fa-eye"
-                }`}
-              ></i>
-            </button>
+            type="button"
+            className=" border-0 px-3"
+            onClick={togglePasswordVisibility2}
+            aria-label={showRePassword ? "Hide password" : "Show password"}
+          >
+            <i
+              className={`fa-solid ${
+                showRePassword ? "fa-eye-slash" : "fa-eye"
+              }`}
+            ></i>
+          </button>
         </div>
         {errors.confirmPassword && (
           <span className="text-danger"> {errors.confirmPassword.message}</span>

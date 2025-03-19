@@ -15,6 +15,7 @@ import CategoriesList from "./modules/categories/categories-list/categories-list
 import UsersList from "./modules/Users/Users-list/Users-list";
 import ProtectedRoute from "./modules/Shared/protectedRoute/protectedRoute.jsx";
 import { LoginDataProvider } from "./context/LoginDataContext.jsx";
+import Signup from "./modules/Auth/Signup/Signup.jsx";
 
 function App() {
   // const [loginData, setLoginData] = useState({});
@@ -38,6 +39,7 @@ function App() {
           path: "login",
           element: <Signin ></Signin>,
         },
+        { path: "signup", element: <Signup></Signup> },
         { path: "verify-account", element: <Verify></Verify> },
         { path: "forget-password", element: <ForgetPass></ForgetPass> },
         { path: "reset-password", element: <ResetPass></ResetPass> },

@@ -15,6 +15,9 @@ body {
   background-size: cover;
   background-position: center;
 }
+.register{
+  background-image: none;
+}
 
 .bg-layer {
   background: linear-gradient(
@@ -55,6 +58,16 @@ body {
 .auth-container .input-group icon,
 .change-pass .input-group icon {
   border-right: solid 1px #8391a1 !important;
+}
+/* registration-form */
+.registration-form .input-group{
+  /* min-width: 7rem; */
+  /* margin-bottom: 0.5rem; */
+}
+.registration-form span.text-danger{
+  margin-top: -1rem;
+  margin-bottom: 1rem;
+  display: block;
 }
 
 /* sidebar */
