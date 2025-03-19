@@ -43,7 +43,7 @@ export default function Signup() {
       let response = await publicAxiosInstance.post(USER_URLS.REGISTER, data);
       console.log(response);
       notify("Welcome back! You have signed in successfully", "success");
-      navigate("/");
+      navigate("/verify-account");
 
     }
      catch (error) {

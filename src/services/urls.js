@@ -17,8 +17,10 @@ export const USER_URLS = {
   REGISTER: "/Users/Register",
   FORGET_PASS: "/Users/Reset/Request",
   RESET_PASS: "/Users/Reset",
+  VERIFY_ACCOUNT :"/Users/verify",
   CHANGE_PASS : "/Users/ChangePassword",
   GET_USER: (id) => `/Users/$(id}`,
+ 
 };
 
 export const CATEGORIES_URLS = {

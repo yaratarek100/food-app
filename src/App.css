@@ -15,6 +15,11 @@ body {
   background-size: cover;
   background-position: center;
 }
+.auth-container form span.text-danger{
+  margin-top: -1rem;
+  margin-bottom: 1rem;
+  display: block;
+}
 .register{
   background-image: none;
 }
@@ -59,16 +64,8 @@ body {
 .change-pass .input-group icon {
   border-right: solid 1px #8391a1 !important;
 }
-/* registration-form */
-.registration-form .input-group{
-  /* min-width: 7rem; */
-  /* margin-bottom: 0.5rem; */
-}
-.registration-form span.text-danger{
-  margin-top: -1rem;
-  margin-bottom: 1rem;
-  display: block;
-}
+
+
 
 /* sidebar */
 .SidebarDiv {
