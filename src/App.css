@@ -11,7 +11,7 @@ body {
 
 .auth-container {
   height: 100vh;
-  background-image: url(E:\up\food-app\foodapp\src\modules\Shared\Authlayout\ella-olsson-C1Q3qOTlegg-unsplash1.jpg);
+  background-image:url(../src/assets/ella-olsson-C1Q3qOTlegg-unsplash1.jpg);
   background-size: cover;
   background-position: center;
 }
