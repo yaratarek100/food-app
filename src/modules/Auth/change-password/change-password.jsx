@@ -64,9 +64,9 @@ export default function ChangePassword({show, setShow}) {
   };
 
   return (
-    <div className={ ` change-pass position-absolute w-100 d-flex justify-content-center align-items-center top-0 left-0  ${show ?"d-block":"d-none"}`} 
+    <div className={ ` change-pass position-absolute w-100 d-flex justify-content-center align-items-center top-0 left-0 ease ${show ? "show-ease" :""}`} 
     onClick={()=>{setShow(false)}}>
- <div className={`   bg-white rounded-5 text-center p-3 mt-5`}   onClick={(e) => e.stopPropagation()}>
+ <div className={`  bg-white   rounded-5 text-center p-3 mt-5  `}   onClick={(e) => e.stopPropagation()}>
             <div className="logo w-100 position-relative">
               <img src={logo} alt="" className="w-50 mx-auto" />
               <i className="fa fa-close position-absolute " onClick={()=>{setShow(false)}}></i>

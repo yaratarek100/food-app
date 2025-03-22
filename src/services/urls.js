@@ -1,4 +1,5 @@
 import axios from "axios";
+import Favorites from './../Components/Favorites/Favorites';
 
 export const baseUrl = "https://upskilling-egypt.com:3006/api/v1";
 export const imgBaseUrl = "https://upskilling-egypt.com:3006/";
@@ -38,7 +39,13 @@ export const RECIPES_URLS = {
 export const USERS_URLS = {
   USERS_LIST :  `/Users/`,
   USERS : (id)=> `/Users/${id}`,
-  ADD_USER : "/Users/",
+  CURRENT_USER :  `/Users/currentUser/`,
+
+  // ADD_USER : "/Users/",
+};
+export const FAVORITES_URLS = {
+  FAVORITE :  `/userRecipe/`,
+  DELETE_FAV : (id)=> `/userRecipe/${id}`,
 };
 
 

@@ -7,7 +7,7 @@ import Verify from "./modules/Auth/Verify/Verify";
 import ForgetPass from "./modules/Auth/Forget-pass/Forget-pass";
 import ResetPass from "./modules/Auth/Reset-pass/Reset-pass";
 import Notfound from "./modules/Shared/Notfound/Notfound";
-import Dashbourd from "./modules/Shared/Dashbourd/Dashbourd.jsx";
+import Dashbourd from "./modules/Shared/Home/Home.jsx";
 import Masterlayout from "./modules/Shared/Masterlayout/Masterlayout";
 import RecipesList from "./modules/Recipes/Recipes-list/Recipes-list.jsx";
 import RecipesData from "./modules/Recipes/Recipes-data/Recipes-data";
@@ -16,6 +16,8 @@ import UsersList from "./modules/Users/Users-list/Users-list";
 import ProtectedRoute from "./modules/Shared/protectedRoute/protectedRoute.jsx";
 import { LoginDataProvider } from "./context/LoginDataContext.jsx";
 import Signup from "./modules/Auth/Signup/Signup.jsx";
+import Favorites from "./Components/Favorites/Favorites.jsx";
+import Home from "./modules/Shared/Home/Home.jsx";
 
 function App() {
   // const [loginData, setLoginData] = useState({});
@@ -34,10 +36,10 @@ function App() {
       element: <Authlayout></Authlayout>,
       errorElement: <Notfound></Notfound>,
       children: [
-        { path: "", element: <Signin ></Signin> },
+        { path: "", element: <Signin></Signin> },
         {
           path: "login",
-          element: <Signin ></Signin>,
+          element: <Signin></Signin>,
         },
         { path: "signup", element: <Signup></Signup> },
         { path: "verify-account", element: <Verify></Verify> },
@@ -46,26 +48,24 @@ function App() {
       ],
     },
     {
-      path: "/dashboard",
+      path: "/home",
       element: (
-        <ProtectedRoute>
-          <Masterlayout
-            
-            
-          ></Masterlayout>
-        </ProtectedRoute>
+        
+          <Masterlayout></Masterlayout>
+        
       ),
       errorElement: <Notfound></Notfound>,
       children: [
-        { index: true, element: <Dashbourd></Dashbourd> },
-
-        { path: "recipes-list", element: <RecipesList></RecipesList> },
-        { path: "recipe-data", element: <RecipesData></RecipesData> },
-        { path: "recipe/:id", element: <RecipesData></RecipesData> },
-        { path: "categories-list", element: <CategoriesList></CategoriesList> },
-        { path: "users-list", element: <UsersList></UsersList> },
+        { index: true, element:<ProtectedRoute allowedGroups={["SuperAdmin", "Admin","SystemUser"]}> <Home></Home> </ProtectedRoute>},
+        { path: "recipes-list", element:<ProtectedRoute allowedGroups={["SuperAdmin", "Admin","SystemUser"]}> <RecipesList></RecipesList> </ProtectedRoute>},
+        { path: "recipe-data", element:<ProtectedRoute allowedGroups={["SuperAdmin", "Admin"]}> <RecipesData></RecipesData> </ProtectedRoute>},
+        { path: "recipe/:id", element:<ProtectedRoute allowedGroups={["SuperAdmin", "Admin"]}> <RecipesData></RecipesData> </ProtectedRoute>},
+        { path: "categories-list", element:<ProtectedRoute allowedGroups={["SuperAdmin", "Admin"]}> <CategoriesList></CategoriesList> </ProtectedRoute>},
+        { path: "users-list", element:<ProtectedRoute allowedGroups={["SuperAdmin", "Admin"]}> <UsersList></UsersList> </ProtectedRoute>},
+        { path: "favorites", element:<ProtectedRoute allowedGroups={["SystemUser"]}> <Favorites></Favorites> </ProtectedRoute>},
       ],
     },
+
   ]);
 
   return (

@@ -114,7 +114,7 @@ export default function RecipesData() {
 
   return (
     <>
-      <FillRecipes />
+      <FillRecipes buttonContent={"All Recipes"} action={"Fill"}/>
       <div className="recipe-data">
         <form onSubmit={handleSubmit(onSubmit)} className="text-center" encType="multipart/form-data">
 

@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from "react";
 import {
   CATEGORIES_URLS,
+  FAVORITES_URLS,
   imgBaseUrl,
   privateAxiosInstance,
   RECIPES_URLS,
   TAGS,
 } from "../../../services/urls";
 import Nodata from "./../../Shared/Nodata/Nodata";
-
 import Header from "./../../../modules/Shared/Header/Header";
 import SmallHeader from "./../../Shared/smallHeader/smallHeader";
-import emptyImg from "./../../../assets/empty.jpg";
+import emptyImg from "./../../../assets/no-recipe.jpg";
 import LoadingScreen from "../../Shared/LoadingScreen/LoadingScreen";
 import { notify } from "../../../utils/notify";
-import DeleteConfermation from "../../Shared/Delete-confairmation/Delete-confairmation";
+import DeleteConfirmation from "../../Shared/Delete-confairmation/Delete-confairmation";
 import PageSelector from "./../../Shared/pageSelector/pageSelector";
 import { useNavigate } from "react-router-dom";
 import Form from "react-bootstrap/Form";
@@ -27,10 +27,11 @@ export default function RecipesList() {
   const [pageArray, setPageArray] = useState([]);
   const [tags, setTags] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [categoryFilter, setCategoryFilter] = useState([]);
-  const [tagFilter, setTagFilter] = useState([]);
-  const [nameFilter, setNameFilter] = useState([]);
-
+  const [categoryFilter, setCategoryFilter] = useState("");
+  const [tagFilter, setTagFilter] = useState("");
+  const [nameFilter, setNameFilter] = useState("");
+  const [isDeleting, setIsDeleting] = useState(false);
+  const userRole = JSON.parse(localStorage.getItem("loginData")).userGroup;
   const navigate = useNavigate();
 
   let getRecipesList = async (
@@ -82,8 +83,23 @@ export default function RecipesList() {
       console.log(error);
     }
   };
+  const addToFavorites = async (id) => {
+    try {
+      const response = await privateAxiosInstance.post(
+        FAVORITES_URLS.FAVORITE,
+        {
+          recipeId: id,
+        }
+      );
+      notify("Recipe successfully added to favorites!", "success");      
+    } catch (error) {
+      console.log(error);
+      notify("Something went wrong!", "error");    }
+    setActiveField("");
+  };
 
   const deleteRecipe = async () => {
+    setIsDeleting(true);
     try {
       let response = await privateAxiosInstance.delete(
         RECIPES_URLS.RECIPE(activeField)
@@ -94,7 +110,8 @@ export default function RecipesList() {
       notify(error.response?.data?.message, "error");
     }
 
-    await getRecipesList(pageNumber);
+    await getRecipesList(nameFilter, tagFilter, categoryFilter, pageNumber);
+    setIsDeleting(false);
     handleClose();
   };
 
@@ -116,7 +133,7 @@ export default function RecipesList() {
   return (
     <div className="list">
       <Header title={"Recipes"} titleSpan={" Items"}></Header>
-      <SmallHeader Item={"recipe"}></SmallHeader>
+      <SmallHeader Item={"recipe"} userRole={userRole}></SmallHeader>
       <div className="search-bar my-4">
         <div className="position-relative w-50 mx-2">
           <i className="fa-solid fa-magnifying-glass position-absolute "></i>
@@ -124,7 +141,9 @@ export default function RecipesList() {
             className="form-control px-5"
             type="search"
             placeholder="Search here ..."
-            onChange={(e) => setNameFilter(e.target.value)}
+            onChange={(e) => {
+              setNameFilter(e.target.value);
+            }}
           />
         </div>
 
@@ -173,7 +192,7 @@ export default function RecipesList() {
           </>
         ) : (
           <table className="table table-striped table-hover recipes-list ">
-                  <thead>
+            <thead>
               <tr>
                 <th scope="col">Name</th>
                 <th scope="col">Image</th>
@@ -186,7 +205,6 @@ export default function RecipesList() {
             </thead>
             {/* //عايزة ادي ال style ده لل thead {  padding-block:0.5rem ;
   border-radius: 15px;}وطبعا مش هينفع بسبب ال display بس لما بعمل display blovk  مقاسات ال sells جوا ال جدول مبتبقاش متناسقة مع المقاسات في الtbody // */}
-        
 
             <tbody className="">
               {recipesList.map((item) => (
@@ -197,7 +215,7 @@ export default function RecipesList() {
                       src={
                         item?.imagePath ? imgBaseUrl + item.imagePath : emptyImg
                       }
-                      className=" rounded-3 mx-auto d-block"
+                      className=" rounded-3 mx-auto d-block "
                     />
                   </td>
                   <td>{item?.price}</td>
@@ -214,9 +232,9 @@ export default function RecipesList() {
                       }}
                     ></i>
                     <div
-                      className={` ${
-                        activeField === item?.id ? "active-field" : ""
-                      } `}
+                      className={` ease ${
+                        activeField === item?.id ? "show-ease" : ""
+                      }`}
                     >
                       <button
                         className="btn  text-secondary  rounded-0 "
@@ -226,23 +244,36 @@ export default function RecipesList() {
                       >
                         <i className="fa-regular fa-eye"></i> View
                       </button>
-                      <button
-                        className="btn text-secondary  rounded-0 "
-                        onClick={() => {
-                          navigate(`/dashboard/recipe/${item?.id}`);
-                        }}
-                      >
-                        <i className="fa fa-edit"> </i>
-                        Edit
-                      </button>
-                      <button
-                        className="btn  text-secondary rounded-0 "
-                        onClick={() => {
-                          setShowDeletionCard(true);
-                        }}
-                      >
-                        <i className="fa-solid fa-trash "></i>Delete
-                      </button>
+                      {userRole != "SystemUser" ? (
+                        <>
+                          <button
+                            className="btn text-secondary  rounded-0 "
+                            onClick={() => {
+                              navigate(`/dashboard/recipe/${item?.id}`);
+                            }}
+                          >
+                            <i className="fa fa-edit"> </i>
+                            Edit
+                          </button>
+                          <button
+                            className="btn  text-secondary rounded-0 "
+                            onClick={() => {
+                              setShowDeletionCard(true);
+                            }}
+                          >
+                            <i className="fa-solid fa-trash "></i>Delete
+                          </button>
+                        </>
+                      ) : (
+                        <button
+                          className="btn  text-secondary rounded-0 "
+                          onClick={() => {
+                            addToFavorites(item.id);
+                          }}
+                        >
+                          <i className="fa-solid fa-heart "></i>Favorite
+                        </button>
+                      )}
                     </div>
                   </td>
                 </tr>
@@ -253,11 +284,13 @@ export default function RecipesList() {
       ) : (
         <LoadingScreen></LoadingScreen>
       )}
-      <DeleteConfermation
+      <DeleteConfirmation
+        isDeleting={isDeleting}
+        item="recipe"
         show={showDeletionCard}
         deletionFunction={deleteRecipe}
         handleClose={handleClose}
-      ></DeleteConfermation>
+      ></DeleteConfirmation>
 
       <PageSelector
         pageNumber={pageNumber}

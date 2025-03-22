@@ -7,13 +7,12 @@ import {
   USERS_URLS,
 } from "../../../services/urls";
 import Nodata from "./../../Shared/Nodata/Nodata";
-import emptyImg from "./../../../assets/empty.jpg";
+import emptyImg from "./../../../assets/no-user.png";
 import { notify } from "./../../../utils/notify";
 import LoadingScreen from "../../Shared/LoadingScreen/LoadingScreen";
-import DeleteConfermation from "./../../Shared/Delete-confairmation/Delete-confairmation";
+import DeleteConfirmation from "./../../Shared/Delete-confairmation/Delete-confairmation";
 import PageSelector from "./../../Shared/pageSelector/pageSelector";
 import Form from "react-bootstrap/Form";
-
 
 export default function UsersList() {
   const [usersList, setUsersList] = useState([]);
@@ -84,11 +83,11 @@ export default function UsersList() {
 
   useEffect(() => {
     getUsersList(
+      pageNumber,
       userNameFilter,
       emailFilter,
       countryFilter,
-      groupsFilter,
-      pageNumber
+      groupsFilter
     );
     console.log(emailFilter);
   }, [userNameFilter, emailFilter, countryFilter, groupsFilter, pageNumber]);
@@ -126,7 +125,6 @@ export default function UsersList() {
   return (
     <div className="list">
       <Header title={"Users"} titleSpan={" List"}></Header>
-      <SmallHeader Item={"users"}></SmallHeader>
 
       <div className="search-bar my-4">
         <div className="position-relative w-50 mx-2">
@@ -179,7 +177,7 @@ export default function UsersList() {
                   <th scope="col">Email</th>
                   <th scope="col">Country</th>
                   <th scope="col">PhoneNumber</th>
-                  <th scope="col">CreationDate</th>
+                  {/* <th scope="col">CreationDate</th> */}
                   <th scope="col">Actions</th>
                 </tr>
               </thead>
@@ -197,7 +195,7 @@ export default function UsersList() {
                   <th scope="col">Email</th>
                   <th scope="col">Country</th>
                   <th scope="col">PhoneNumber</th>
-                  <th scope="col">CreationDate</th>
+                  {/* <th scope="col">CreationDate</th> */}
                   <th scope="col">Actions</th>
                 </tr>
               </thead>
@@ -219,8 +217,21 @@ export default function UsersList() {
                     <td>{item?.email}</td>
                     <td>{item?.country}</td>
                     <td>{item?.phoneNumber}</td>
-                    <td>{item?.creationDate}</td>
+
+                    {/* <td>{item?.creationDate}</td> */}
+
                     <td className="position-relative">
+                      <i
+                        className="fa fa-trash"
+                        onClick={() => {
+                          setActiveField(
+                            activeField === item?.id ? null : item?.id
+                          );
+                          setShowDeletionCard(true);
+                        }}
+                      ></i>
+
+                      {/*
                       <i
                         className="fa fa-ellipsis-h"
                         onClick={() =>
@@ -228,10 +239,11 @@ export default function UsersList() {
                             activeField === item?.id ? null : item?.id
                           )
                         }
-                      ></i>
-                      <div
-                        className={
-                          activeField === item?.id ? "active-field" : ""
+                      ></i> */}
+
+                      {/* <div
+                        className={ 
+                         ` ease ${ activeField === item?.id ? "show-ease" : ""}`
                         }
                       >
                         <button
@@ -252,7 +264,7 @@ export default function UsersList() {
                         >
                           <i className="fa-solid fa-trash"></i> Delete
                         </button>
-                      </div>
+                      </div> */}
                     </td>
                   </tr>
                 ))}
@@ -269,11 +281,12 @@ export default function UsersList() {
         <LoadingScreen />
       )}
 
-      <DeleteConfermation
+      <DeleteConfirmation
+        item="user"
         show={showDeletionCard}
         deletionFunction={deleteUser}
         handleClose={handleClose}
-      ></DeleteConfermation>
+      ></DeleteConfirmation>
     </div>
   );
 }

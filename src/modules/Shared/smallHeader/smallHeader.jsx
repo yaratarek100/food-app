@@ -1,8 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-export default function FillRecipes({ Item, setShow }) {
-
+export default function FillRecipes({ Item, setShow ,userRole}) {
 
   return (
     <>
@@ -11,11 +10,15 @@ export default function FillRecipes({ Item, setShow }) {
           <h5 className="h5 m-0">{Item} Table Details</h5>
           <p className="m-0">You can check all details </p>
         </div>
-        {Item == "recipe" ? (
-          <Link to={"/dashboard/recipe-data"}>
+
+        {/* show adding button */}
+        {userRole == "SystemUser" ? null : Item == "recipe" ? (
+          //for adding new recipe
+          <Link to={"/home/recipe-data"}>
             <button className="btn"> Add New {Item}</button>
           </Link>
         ) : (
+          //for adding new category
           <button
             className="btn"
             onClick={() => {

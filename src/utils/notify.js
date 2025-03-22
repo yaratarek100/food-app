@@ -1,15 +1,20 @@
 
-import { Bounce, toast } from "react-toastify";
+import { Flip, toast } from "react-toastify";
 
-export const notify = (message, type) => {
+export const notify = (message, type  ) => {
+
+ let customClass="toastCustomClass";
+
     toast[type](message, {
-      position: "top-right",
-      autoClose: 3000,
+      position: "top-center",
+      autoClose: 5000,
       hideProgressBar: false,
-      closeOnClick: true,
+      closeOnClick: false,
       pauseOnHover: true,
       draggable: true,
-      theme: "colored",
-      transition: Bounce,
+      progress: undefined,
+      theme: "light",
+      transition: Flip,
+      className: customClass,
     });
   }

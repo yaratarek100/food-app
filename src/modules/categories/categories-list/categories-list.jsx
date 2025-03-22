@@ -3,7 +3,7 @@ import { CATEGORIES_URLS, privateAxiosInstance } from "../../../services/urls";
 import Nodata from "./../../Shared/Nodata/Nodata";
 import Header from "./../../../modules/Shared/Header/Header";
 import SmallHeader from "./../../Shared/smallHeader/smallHeader";
-import DeleteConfermation from "../../Shared/Delete-confairmation/Delete-confairmation";
+import DeleteConfirmation from "../../Shared/Delete-confairmation/Delete-confairmation";
 import LoadingScreen from "../../Shared/LoadingScreen/LoadingScreen";
 import { notify } from "../../../utils/notify";
 import CategoryForm from "../CategoryForm/CategoryForm";
@@ -19,8 +19,8 @@ export default function CategoriesList() {
   const [pageNumber, setPageNumber] = useState(1);
   const [pageArray, setPageArray] = useState([]);
   const [nameFilter, setNameFilter] = useState("");
-
-  const getCategoriesList = async (nameFilter, pageNumber) => {
+  const [isDeleting, setIsDeleting] = useState(false);
+  const getCategoriesList = async (pageNumber, nameFilter) => {
     try {
       let response = await privateAxiosInstance.get(
         CATEGORIES_URLS.CATEGORIES_LIST,
@@ -46,31 +46,8 @@ export default function CategoriesList() {
     setIsLoaded(true);
   };
 
-  // useEffect(() => {
-  //   console.log(pageArray);
-  // }, [pageArray]);
-
-  // let processCategory = async (categoryId, operation) => {
-  //   try {
-  //     let response;
-  //     switch (operation.toLowerCase()) {
-  //       case "get":
-  //         response = await privateAxiosInstance.get(
-  //           CATEGORIES_URLS.CATEGORY(categoryId)
-  //         );
-  //         console.log(response.data);
-  //         break;
-
-  //       default:
-  //         console.error("Invalid operation:", operation);
-  //         return;
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
   const deleteCategory = async () => {
+    setIsDeleting(true);
     try {
       await privateAxiosInstance.delete(CATEGORIES_URLS.CATEGORY(activeField));
       notify("category was deleted successfully", "success");
@@ -78,6 +55,7 @@ export default function CategoriesList() {
       console.log(error);
       notify(error.response?.data?.message, "error");
     }
+    setIsDeleting(false);
     await getCategoriesList(pageNumber);
 
     handleClose();
@@ -127,7 +105,7 @@ export default function CategoriesList() {
   }, [pageNumber]);
 
   useEffect(() => {
-    getCategoriesList(nameFilter, pageNumber);
+    getCategoriesList(pageNumber, nameFilter);
   }, [pageNumber, nameFilter]);
 
   return (
@@ -187,18 +165,17 @@ export default function CategoriesList() {
                       ></i>
 
                       <div
-                        className={`start-0 ${
-                          activeField === item.id ? "active-field" : ""
+                        className={` ease ${
+                          activeField === item?.id ? "show-ease" : ""
                         }`}
                       >
-                        <button
+                        {/* <button
                           className="btn  text-secondary  rounded-0 "
                           onClick={() => {
-                            processRecipe(item?.id, "get");
                           }}
                         >
                           <i className="fa-regular fa-eye"></i> View
-                        </button>
+                        </button> */}
                         <button
                           className="btn text-secondary rounded-0"
                           onClick={() => {
@@ -241,7 +218,9 @@ export default function CategoriesList() {
         handleClose={handleClose}
       />
 
-      <DeleteConfermation
+      <DeleteConfirmation
+        item="category"
+        isDeleting={isDeleting}
         show={showDeletionCard}
         deletionFunction={deleteCategory}
         handleClose={handleClose}

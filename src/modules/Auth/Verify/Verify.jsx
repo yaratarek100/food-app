@@ -77,14 +77,14 @@ export default function Verify() {
           </span>
           <input
             type="text"
-            {...register("seed", { required: "OTP is required" })}
+            {...register("code", { required: "OTP is required" })}
             className="form-control border-0 shadow-none "
             id="floatingInputGroup1"
             placeholder="OTP"
           />
         </div>
-        {errors.seed && (
-          <span className=" text-danger"> {errors.seed.message}</span>
+        {errors.code && (
+          <span className=" text-danger"> {errors.code.message}</span>
         )}
       
         
