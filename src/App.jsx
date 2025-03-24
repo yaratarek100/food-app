@@ -7,7 +7,6 @@ import Verify from "./modules/Auth/Verify/Verify";
 import ForgetPass from "./modules/Auth/Forget-pass/Forget-pass";
 import ResetPass from "./modules/Auth/Reset-pass/Reset-pass";
 import Notfound from "./modules/Shared/Notfound/Notfound";
-import Dashbourd from "./modules/Shared/Home/Home.jsx";
 import Masterlayout from "./modules/Shared/Masterlayout/Masterlayout";
 import RecipesList from "./modules/Recipes/Recipes-list/Recipes-list.jsx";
 import RecipesData from "./modules/Recipes/Recipes-data/Recipes-data";
@@ -16,19 +15,12 @@ import UsersList from "./modules/Users/Users-list/Users-list";
 import ProtectedRoute from "./modules/Shared/protectedRoute/protectedRoute.jsx";
 import { LoginDataProvider } from "./context/LoginDataContext.jsx";
 import Signup from "./modules/Auth/Signup/Signup.jsx";
-import Favorites from "./Components/Favorites/Favorites.jsx";
+import Favorites from "./modules/Recipes/Favorites/Favorites.jsx";
 import Home from "./modules/Shared/Home/Home.jsx";
+import Profile from "./modules/Users/Profile/Profile.jsx";
 
 function App() {
-  // const [loginData, setLoginData] = useState({});
 
-  // const saveLoginData =  () => {
-  //   let encodedToken = localStorage.getItem("token");
-  //   let decodedToken =  jwtDecode(encodedToken);
-
-  //   setLoginData(decodedToken);
-  //   console.log("save");
-  // };
 
   const routs = createBrowserRouter([
     {
@@ -62,6 +54,7 @@ function App() {
         { path: "recipe/:id", element:<ProtectedRoute allowedGroups={["SuperAdmin", "Admin"]}> <RecipesData></RecipesData> </ProtectedRoute>},
         { path: "categories-list", element:<ProtectedRoute allowedGroups={["SuperAdmin", "Admin"]}> <CategoriesList></CategoriesList> </ProtectedRoute>},
         { path: "users-list", element:<ProtectedRoute allowedGroups={["SuperAdmin", "Admin"]}> <UsersList></UsersList> </ProtectedRoute>},
+        { path: "profile", element:<ProtectedRoute allowedGroups={["SuperAdmin", "Admin","SystemUser"]}> <Profile></Profile> </ProtectedRoute>},
         { path: "favorites", element:<ProtectedRoute allowedGroups={["SystemUser"]}> <Favorites></Favorites> </ProtectedRoute>},
       ],
     },

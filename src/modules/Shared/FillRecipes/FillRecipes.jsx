@@ -1,10 +1,11 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function FillRecipes({buttonContent ,action}) {
-  return (
-    <div className="d-flex fillrecipes rounded-4 my-3 justify-content-between align-items-center">
-      <div className="rightPart">
+  const navigate =useNavigate();
+    return (
+    <div className="d-flex flex-column flex-md-row fillrecipes rounded-4 my-3 justify-content-between align-items-center">
+      <div className="rightPart w-100 w-md-50 mb-2 pe-md-5">
         <h5 className="h4">
           {action} the
           <span>Recipes</span>!
@@ -14,12 +15,12 @@ export default function FillRecipes({buttonContent ,action}) {
           here and sill it with the table !
         </p>
       </div>
-        <Link to={"/home/recipes-list"}>
-      <button className="btn p-2 px-5">
+      <button className="btn p-2 px-5 auth-btn btnn" 
+      onClick={()=>{navigate("/home/recipes-list")}}
+            >
         {buttonContent}
         <i className="fa-solid fa-arrow-right ms-3"></i>
       </button>
-        </Link>
     </div>
   );
 }

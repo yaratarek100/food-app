@@ -17,12 +17,14 @@ import DeleteConfirmation from "../../Shared/Delete-confairmation/Delete-confair
 import PageSelector from "./../../Shared/pageSelector/pageSelector";
 import { useNavigate } from "react-router-dom";
 import Form from "react-bootstrap/Form";
+import RecipeCard from "../recipeCard/recipeCard";
 
 export default function RecipesList() {
   const [recipesList, setRecipesList] = useState([]);
   const [activeField, setActiveField] = useState("");
   const [isLoaded, setIsLoaded] = useState(false);
   const [showDeletionCard, setShowDeletionCard] = useState(false);
+  const [showRecipeCard, setShowRecipeCard] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
   const [pageArray, setPageArray] = useState([]);
   const [tags, setTags] = useState([]);
@@ -91,11 +93,12 @@ export default function RecipesList() {
           recipeId: id,
         }
       );
-      notify("Recipe successfully added to favorites!", "success");      
+      notify("Recipe successfully added to favorites!", "success");
     } catch (error) {
       console.log(error);
-      notify("Something went wrong!", "error");    }
-    setActiveField("");
+      notify("Something went wrong!", "error");
+    }
+    setActiveField();
   };
 
   const deleteRecipe = async () => {
@@ -118,6 +121,7 @@ export default function RecipesList() {
   const handleClose = async () => {
     setActiveField(null);
     setShowDeletionCard(false);
+    setShowRecipeCard(false);
   };
 
   useEffect(() => {
@@ -203,8 +207,6 @@ export default function RecipesList() {
                 <th scope="col">Actions</th>
               </tr>
             </thead>
-            {/* //عايزة ادي ال style ده لل thead {  padding-block:0.5rem ;
-  border-radius: 15px;}وطبعا مش هينفع بسبب ال display بس لما بعمل display blovk  مقاسات ال sells جوا ال جدول مبتبقاش متناسقة مع المقاسات في الtbody // */}
 
             <tbody className="">
               {recipesList.map((item) => (
@@ -239,7 +241,7 @@ export default function RecipesList() {
                       <button
                         className="btn  text-secondary  rounded-0 "
                         onClick={() => {
-                          processRecipe(item?.id, "get");
+                          setShowRecipeCard(item?.id);
                         }}
                       >
                         <i className="fa-regular fa-eye"></i> View
@@ -249,7 +251,7 @@ export default function RecipesList() {
                           <button
                             className="btn text-secondary  rounded-0 "
                             onClick={() => {
-                              navigate(`/dashboard/recipe/${item?.id}`);
+                              navigate(`/home/recipe/${item?.id}`);
                             }}
                           >
                             <i className="fa fa-edit"> </i>
@@ -297,6 +299,13 @@ export default function RecipesList() {
         setPageNumber={setPageNumber}
         pageArray={pageArray}
       ></PageSelector>
+
+      <RecipeCard
+        show={showRecipeCard}
+        id={activeField}
+        handleClose={handleClose}
+        addToFavorites={addToFavorites}
+      ></RecipeCard>
     </div>
   );
 }

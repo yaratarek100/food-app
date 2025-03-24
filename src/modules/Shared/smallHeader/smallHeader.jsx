@@ -1,8 +1,8 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link ,useNavigate} from "react-router-dom";
 
 export default function FillRecipes({ Item, setShow ,userRole}) {
-
+  const navigate =useNavigate();
   return (
     <>
       <div className="d-flex small-header py-1 justify-content-between align-items-center my-3">
@@ -14,9 +14,8 @@ export default function FillRecipes({ Item, setShow ,userRole}) {
         {/* show adding button */}
         {userRole == "SystemUser" ? null : Item == "recipe" ? (
           //for adding new recipe
-          <Link to={"/home/recipe-data"}>
-            <button className="btn"> Add New {Item}</button>
-          </Link>
+            <button className="btn auth-btn btnn"      onClick={()=>{navigate("/home/recipe-data")}}> Add New {Item}</button>
+        
         ) : (
           //for adding new category
           <button

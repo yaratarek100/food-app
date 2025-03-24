@@ -23,6 +23,7 @@ export const USER_NAME_VALIDATION = {
   required: "The userName is required.",
   validate: (value) => {
     if (value.length < 4) return "Password must be at least 4 characters long.";
+    if (value.length >8) return "Password must be at most 8 characters long.";
     if (/\s/.test(value))
       return "The userName must contain characters and end with numbers without spaces.";
     if (!/[A-Za-z]/.test(value))

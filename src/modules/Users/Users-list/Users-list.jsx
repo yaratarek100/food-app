@@ -13,6 +13,7 @@ import LoadingScreen from "../../Shared/LoadingScreen/LoadingScreen";
 import DeleteConfirmation from "./../../Shared/Delete-confairmation/Delete-confairmation";
 import PageSelector from "./../../Shared/pageSelector/pageSelector";
 import Form from "react-bootstrap/Form";
+import UserCard from "../UserCard/UserCard";
 
 export default function UsersList() {
   const [usersList, setUsersList] = useState([]);
@@ -21,17 +22,18 @@ export default function UsersList() {
   const [pageNumber, setPageNumber] = useState(1);
   const [pageArray, setPageArray] = useState([]);
   const [showDeletionCard, setShowDeletionCard] = useState(false);
+  const [showUserCard, setShowUserCard] = useState(false);
   const [userNameFilter, setUserNameFilter] = useState("");
   const [groupsFilter, setGroupsFilter] = useState("");
   const [emailFilter, setEmailFilter] = useState("");
   const [countryFilter, setCountryFilter] = useState("");
 
   let getUsersList = async (
+    pageNumber,
     userNameFilter,
     emailFilter,
     countryFilter,
-    groupsFilter,
-    pageNumber
+    groupsFilter
   ) => {
     try {
       let response = await privateAxiosInstance.get(USERS_URLS.USERS_LIST, {
@@ -75,6 +77,7 @@ export default function UsersList() {
   const handleClose = async () => {
     setActiveField(null);
     setShowDeletionCard(false);
+    setShowUserCard(false);
   };
 
   useEffect(() => {
@@ -89,38 +92,8 @@ export default function UsersList() {
       countryFilter,
       groupsFilter
     );
-    console.log(emailFilter);
   }, [userNameFilter, emailFilter, countryFilter, groupsFilter, pageNumber]);
 
-  let processUsers = async (userId, operation) => {
-    try {
-      let response;
-      switch (operation.toLowerCase()) {
-        case "get":
-          response = await privateAxiosInstance.get(USERS_URLS.USERS(userId));
-          console.log(response.data);
-          break;
-          // case "put":
-          //   response = await privateAxiosInstance.put(
-          //     USERS_URLS.USERS(userId),
-          //   );
-          //   break;
-          // case "delete":
-
-          // setShowDeletionCard(true);
-          //  setIdForDeletion(userId);
-          // console.log(usersList.length);
-
-          break;
-
-        default:
-          console.error("Invalid operation:", operation);
-          return;
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }; //محتاج تعديل فيما بعد
 
   return (
     <div className="list">
@@ -195,7 +168,6 @@ export default function UsersList() {
                   <th scope="col">Email</th>
                   <th scope="col">Country</th>
                   <th scope="col">PhoneNumber</th>
-                  {/* <th scope="col">CreationDate</th> */}
                   <th scope="col">Actions</th>
                 </tr>
               </thead>
@@ -218,10 +190,8 @@ export default function UsersList() {
                     <td>{item?.country}</td>
                     <td>{item?.phoneNumber}</td>
 
-                    {/* <td>{item?.creationDate}</td> */}
-
                     <td className="position-relative">
-                      <i
+                      {/* <i
                         className="fa fa-trash"
                         onClick={() => {
                           setActiveField(
@@ -229,9 +199,9 @@ export default function UsersList() {
                           );
                           setShowDeletionCard(true);
                         }}
-                      ></i>
+                      ></i> */}
 
-                      {/*
+                      
                       <i
                         className="fa fa-ellipsis-h"
                         onClick={() =>
@@ -239,24 +209,18 @@ export default function UsersList() {
                             activeField === item?.id ? null : item?.id
                           )
                         }
-                      ></i> */}
+                      ></i>
 
-                      {/* <div
+                      <div
                         className={ 
                          ` ease ${ activeField === item?.id ? "show-ease" : ""}`
                         }
                       >
                         <button
                           className="btn text-secondary rounded-0"
-                          onClick={() => processUsers(item?.id, "get")}
+                          onClick={() => setShowUserCard(true)}
                         >
                           <i className="fa-regular fa-eye"></i> View
-                        </button>
-                        <button
-                          className="btn text-secondary rounded-0"
-                          onClick={() => processUsers(item?.id, "put")}
-                        >
-                          <i className="fa fa-edit"></i> Edit
                         </button>
                         <button
                           className="btn text-secondary rounded-0"
@@ -264,7 +228,7 @@ export default function UsersList() {
                         >
                           <i className="fa-solid fa-trash"></i> Delete
                         </button>
-                      </div> */}
+                      </div>
                     </td>
                   </tr>
                 ))}
@@ -287,6 +251,14 @@ export default function UsersList() {
         deletionFunction={deleteUser}
         handleClose={handleClose}
       ></DeleteConfirmation>
+
+      <UserCard
+        show={showUserCard}
+        id={activeField}
+        handleClose={handleClose}
+      ></UserCard>
+
+
     </div>
   );
 }

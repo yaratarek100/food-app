@@ -7,7 +7,7 @@ export default function Header({ home, title, titleSpan }) {
   let userEmail = localStorage.getItem("loginData").userName;
 
   return (
-    <div className="headerDiv  overflow-hidden position-relative z d-flex flex-column-reverse flex-md-row w-100 rounded-4 align-items-center justify-content-center justify-content-md-between mb-2">
+    <div className="headerDiv px-md-5 overflow-hidden position-relative z d-flex flex-column-reverse flex-md-row w-100 rounded-4 align-items-center justify-content-center justify-content-md-between mb-2">
       <div className="header-bg">
 
       <svg className="" xmlns="http://www.w3.org/2000/svg" fill="none"  viewBox="20.936875 0.4519589552238806 1159.21 326.11791417910445"   style={{maxHeight: "500px"}} width="100%" height="100%">
@@ -37,7 +37,7 @@ export default function Header({ home, title, titleSpan }) {
       </div>
       
       ) : (
-          <div className="leftSide  w-md-50 w-100  px-md-5 text-white z-1">
+          <div className="leftSide  w-md-50 w-100   text-white z-1">
           <h2 className=" ">
             {title} <span> {titleSpan} </span>
           </h2>
@@ -49,7 +49,7 @@ export default function Header({ home, title, titleSpan }) {
       )}
       <div className="rightSide w-md-25 w-100 z-1 text-center text-md-start ">
 
-        <img src={home? homeImg : usersImg} className={home? "w-50 w-md-100 d-block mx-auto mx-md-0 ms-md-auto" : "w-md-75 my-2 d-block mx-auto "}/>
+        <img src={home? homeImg : usersImg} className={home? "w-50 w-md-100 d-block mx-auto mx-md-0 ms-md-auto" : "w-md-75 my-2 d-block mx-md-0 mx-auto ms-md-auto"}/>
       </div>
     </div>
   );

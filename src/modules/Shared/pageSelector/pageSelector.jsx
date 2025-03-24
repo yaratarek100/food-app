@@ -16,7 +16,7 @@ function AdvancedExample({ pageNumber, setPageNumber, pageArray }) {
         <Pagination.Item  
           key={0}
           onClick={() => {
-            setPageNumber(Number);
+            setPageNumber(1);
           }}
           className={pageNumber <= 3 ? `d-none` : ``}
         >

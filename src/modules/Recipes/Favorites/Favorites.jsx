@@ -3,16 +3,19 @@ import {
   FAVORITES_URLS,
   imgBaseUrl,
   privateAxiosInstance,
-} from "../../services/urls";
-import emptyImg from "./../../assets/no-recipe.jpg";
-import Nodata from "../../modules/Shared/Nodata/Nodata";
-import LoadingScreen from "../../modules/Shared/LoadingScreen/LoadingScreen";
-import { notify } from "../../utils/notify";
-import Header from "../../modules/Shared/Header/Header";
+} from "../../../services/urls";
+import emptyImg from "./../../../assets/no-recipe.jpg";
+import Nodata from "../../Shared/Nodata/Nodata";
+import LoadingScreen from "../../Shared/LoadingScreen/LoadingScreen";
+import { notify } from "../../../utils/notify";
+import Header from "../../Shared/Header/Header";
+import RecipeCard from "../recipeCard/recipeCard";
 
 export default function Favorites() {
   const [favorites, setFavorites] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [showRecipeCard, setShowRecipeCard] = useState(false);
+  const [activeField, setActiveField] = useState("");
 
   let getFavs = async () => {
     try {
@@ -22,6 +25,9 @@ export default function Favorites() {
       console.log(error);
     }
     setIsLoaded(true);
+  };
+  const handleClose = async () => {
+    setShowRecipeCard(false);
   };
   useEffect(() => {
     getFavs();
@@ -47,10 +53,18 @@ export default function Favorites() {
           <Nodata></Nodata>
         ) : (
           <div className="container-fluid">
-            <Header home={false} title={"Favorite"} titleSpan={"Items"} ></Header>
+            <Header
+              home={false}
+              title={"Favorite"}
+              titleSpan={"Items"}
+            ></Header>
             <div className="row">
               {favorites.map((item) => (
-                <div className="col-12 col-sm-6 col-md-4 col-lg-3" key={item.id}>
+                <div
+                  className="col-12 col-sm-6 col-md-4 col-lg-3 curser-pointer"
+                  key={item.id}
+                  onClick={()=>{setActiveField(item?.recipe?.id),setShowRecipeCard(true)}}
+                >
                   <div className="recipe-card rounded-3 overflow-hidden position-relative">
                     <div className="img-div">
                       <img
@@ -86,6 +100,11 @@ export default function Favorites() {
       ) : (
         <LoadingScreen></LoadingScreen>
       )}
+      <RecipeCard
+        show={showRecipeCard}
+        id={activeField}
+        handleClose={handleClose}
+      ></RecipeCard>
     </>
   );
 }

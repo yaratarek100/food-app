@@ -7,6 +7,7 @@ import Form from "react-bootstrap/Form";
 
 import {
   CATEGORIES_URLS,
+  imgBaseUrl,
   privateAxiosInstance,
   RECIPES_URLS,
   TAGS,
@@ -16,6 +17,17 @@ import { notify } from "../../../utils/notify";
 export default function RecipesData() {
   const [tags, setTags] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [recipeImg, setRecipeImg] = useState(null);
+  const [fileName, setFileName] = useState("");
+
+  const handleImageChange = (event) => {
+    const file = event?.target?.files[0]; 
+    if (file) {
+      setRecipeImg(URL.createObjectURL(file));
+      setFileName(file.name);
+      setValue("recipeImage", file, { shouldValidate: true }); 
+    }
+  };
 
   const navigate = useNavigate();
 
@@ -26,7 +38,7 @@ export default function RecipesData() {
         data
       );
       notify("Recipe was added successfully", "success");
-      navigate("/dashboard/recipes-list");
+      navigate("/home/recipes-list");
     } catch (error) {
       console.log(error);
       notify(error.response?.data?.message, "error");
@@ -39,7 +51,7 @@ export default function RecipesData() {
         data
       );
       notify("Recipe was edited successfully", "success");
-      navigate("/dashboard/recipes-list");
+      navigate("/home/recipes-list");
     } catch (error) {
       console.log(error);
       notify(error.response?.data?.message, "error");
@@ -70,6 +82,13 @@ export default function RecipesData() {
         RECIPES_URLS.RECIPE(RecipeId)
       );
       const recipeData = response?.data;
+      const currentRecipeImg = response?.data?.imagePath;
+      console.log(currentRecipeImg);
+         // img handling
+            currentRecipeImg
+              ? setRecipeImg(imgBaseUrl + currentRecipeImg)
+              : setRecipeImg(null); 
+
       setValue("name", recipeData?.name);
       setValue("price", recipeData?.price);
       setValue("tagId", recipeData?.tag?.id);
@@ -94,7 +113,7 @@ export default function RecipesData() {
     const formData = new FormData();
 
     for (let key in data) {
-      formData.append(key, key === "recipeImage" ? data[key][0] : data[key]);
+      formData.append(key, data[key]);
     }
 
     if (id) {
@@ -114,10 +133,13 @@ export default function RecipesData() {
 
   return (
     <>
-      <FillRecipes buttonContent={"All Recipes"} action={"Fill"}/>
+      <FillRecipes buttonContent={"All Recipes"} action={"Fill"} />
       <div className="recipe-data">
-        <form onSubmit={handleSubmit(onSubmit)} className="text-center" encType="multipart/form-data">
-
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="text-center"
+          encType="multipart/form-data"
+        >
           <input
             type="text"
             className="data-input"
@@ -178,38 +200,40 @@ export default function RecipesData() {
           {errors.description && (
             <span className="text-danger">{errors.description.message}</span>
           )}
-<div className="img-input data-input">
-  <input
-            type="file"
-            id="recipeImage"
-            className="d-none"
-            {
-              ...register("recipeImage") //
-            }
-          />
-          <label htmlFor="recipeImage">
-            <i className="fa fa-upload d-block" ></i>
-          Drag & Drop or<span> Choose a Item Image </span>to Upload
-          </label>
-</div>
-          
+          <div className={` d-flex gap-3 p-0 data-input align-items-end bg-transparent`}>
+            <div className={`img-div ${recipeImg?"":"d-none"}`}>
+            <img src={recipeImg} className={recipeImg?"w-100":""} />
+            <p className={`m-1 text-center`}>{fileName}</p>
+            </div>
+            <div className="img-input rounded-4">
 
+            <input
+              type="file"
+              id="recipeImage"
+              className="d-none"
+              accept="image/*"
+              {...register("recipeImage")}
+              onChange={handleImageChange}
+              />
+            <label htmlFor="recipeImage" className="w-100">
+              <i className="fa fa-upload d-block"></i>
+              Drag & Drop or<span> Choose a Item Image </span>to Upload
+            </label>
+              </div>
+          </div>
 
-<div className="form-footer d-flex justify-content-end p-5  gap-3 ">
-
-    <button  type="submit" className="btn btn-outline-success" >
-          
-           cancel
-          </button>
-    <button  type="submit" className="btn btn-success">
-            {isSubmitting ? (
-              <i className="fa-solid fa-spinner fa-spin"></i>
-            ) : (
-              "save"
-            )}
-          </button>
-  </div>
-        
+          <div className="form-footer d-flex justify-content-end p-5  gap-3 ">
+            <button type="button" className="btn btn-outline-success" onClick={()=>{navigate("/home/recipes-list")}}>
+              cancel
+            </button>
+            <button type="submit" className="btn btn-success">
+              {isSubmitting ? (
+                <i className="fa-solid fa-spinner fa-spin"></i>
+              ) : (
+                "save"
+              )}
+            </button>
+          </div>
         </form>
       </div>
     </>
