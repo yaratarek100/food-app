@@ -36,7 +36,7 @@ export default function Navbar() {
                       ? imgBaseUrl + currentUser?.imagePath
                       : emptyImg
                   }
-                  className="h-100 rounded-circle"
+                  className=" rounded-circle"
                 />
                   <span>
                   {JSON.parse(localStorage.getItem("loginData"))?.userName}

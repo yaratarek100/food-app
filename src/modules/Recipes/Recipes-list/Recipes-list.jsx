@@ -220,7 +220,7 @@ export default function RecipesList() {
                       className=" rounded-3 mx-auto d-block "
                     />
                   </td>
-                  <td>{item?.price}</td>
+                  <td>{item?.price}  EGP</td>
                   <td>{item?.description}</td>
                   <td>20</td>
                   <td>{item?.category[0]?.name}</td>
@@ -304,7 +304,7 @@ export default function RecipesList() {
         show={showRecipeCard}
         id={activeField}
         handleClose={handleClose}
-        addToFavorites={addToFavorites}
+        btnFunction={addToFavorites}
       ></RecipeCard>
     </div>
   );

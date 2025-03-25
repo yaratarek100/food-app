@@ -5,6 +5,7 @@ import { notify } from "./../../../utils/notify";
 import { publicAxiosInstance, USER_URLS } from "../../../services/urls";
 import { EMAIL_VALIDATION } from "./../../../services/validations";
 import { LoginDataContext } from "../../../context/LoginDataContext";
+import { jwtDecode } from "jwt-decode";
 export default function Signin() {
   const { saveLoginData } = useContext(LoginDataContext);
 
@@ -29,9 +30,11 @@ export default function Signin() {
       let response = await publicAxiosInstance.post(USER_URLS.LOGIN, data);
       notify("Welcome back! You have signed in successfully", "success");
       navigate("/home");
-      localStorage.setItem("token", response?.data?.token);
 
-      saveLoginData();
+      let encodedToken = (response?.data?.token);
+      localStorage.setItem("token",encodedToken);
+      let decodedToken = jwtDecode(encodedToken);
+      localStorage.setItem("loginData", JSON.stringify(decodedToken));
     } catch (error) {
       console.log(error);
       notify(error.response?.data?.message, "error");

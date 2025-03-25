@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import ChangePassword from "../../Auth/change-password/change-password";
 
 export default function Sidebarr() {
-  const userRole = JSON.parse(localStorage.getItem("loginData")).userGroup;
+  const userRole = JSON.parse(localStorage.getItem("loginData"))?.userGroup;
 
 
   useEffect(() => {
@@ -26,8 +26,10 @@ export default function Sidebarr() {
   };
 
   let navigate = useNavigate();
+
   let signout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("loginData");
     navigate("/login");
   };
 

@@ -1,46 +1,62 @@
 import { useEffect, useState } from "react";
 import Modal from "react-bootstrap/Modal";
-import { imgBaseUrl, privateAxiosInstance, RECIPES_URLS } from "../../../services/urls";
-
+import {
+  imgBaseUrl,
+  privateAxiosInstance,
+  RECIPES_URLS,
+} from "../../../services/urls";
 
 import emptyImg from "./../../../assets/no-recipe.jpg";
+import LoadingScreen from "../../Shared/LoadingScreen/LoadingScreen";
 
-function RecipeCard({ show, id, handleClose ,addToFavorites}) {
-  
+function RecipeCard({ show, id, handleClose, btnFunction, idForRemove ,setIdForRemove}) {
   const userRole = JSON.parse(localStorage.getItem("loginData")).userGroup;
 
-  const [recipeData, setRecipeData] = useState({})
-  const [isLauding, setIsLauding] = useState(false)
+  const [recipeData, setRecipeData] = useState({});
+  const [isLauding, setIsLauding] = useState(false);
+  const [isDataLoaded, setIsDataLoaded] = useState(false);
 
-  const handelAddToFavs =async(id)=>{
-setIsLauding(true)
-await addToFavorites(id);
-setIsLauding(false)
-  }
+  const handelAddToFavs = async () => {
+    setIsLauding(true);
+    if (idForRemove) {
+      await btnFunction(idForRemove);
+      await handleClose();
+      setIdForRemove(null)
 
-  const getRecipeData = async(id)=>{
-
-    
-    try{
-      let response=await privateAxiosInstance.get(RECIPES_URLS.RECIPE(id))
-      setRecipeData(response.data)
+    } else {
+      await btnFunction(id);
+      await handleClose();
     }
-    catch(error){
+    setIsLauding(false);
+  };
+
+  const getRecipeData = async (id) => {
+    try {
+      let response = await privateAxiosInstance.get(RECIPES_URLS.RECIPE(id));
+      setRecipeData(response.data);
+      setIsDataLoaded(true)
+    } catch (error) {
       console.log(error);
     }
-  }
 
-  useEffect(()=>{
-    if(id){
+  };
+
+  useEffect(() => {
+    if (id) {
       getRecipeData(id);
     }
-  },[id])
-
-
+  }, [id]);
 
   return (
     <>
-      <Modal show={show} onHide={handleClose} className="popup-card">
+ 
+   <Modal show={show} onHide={handleClose} className="popup-card">
+
+   {!isDataLoaded ?
+    <LoadingScreen></LoadingScreen>
+  :
+  <>
+
         <Modal.Header closeButton></Modal.Header>
         <div className="content notImg ">
           <div className="img-div">
@@ -48,7 +64,7 @@ setIsLauding(false)
               src={
                 recipeData.imagePath
                   ? imgBaseUrl + recipeData.imagePath
-                   : emptyImg
+                  : emptyImg
               }
               className="w-100"
             />
@@ -56,11 +72,11 @@ setIsLauding(false)
           <div className="recipe-details card-details">
             <h2 className="recipe-title">{recipeData.name}</h2>
             <p className="recipe-description">
-              
-              <strong>Description :</strong> 
-              {recipeData.description}</p>
+              <strong>Description :</strong>
+              {recipeData.description}
+            </p>
             <p className="recipe-price">
-              <strong>Price :</strong> 
+              <strong>Price :</strong>
               {recipeData.price} EGP
             </p>
             {recipeData.category && recipeData.category.length > 0 && (
@@ -74,27 +90,41 @@ setIsLauding(false)
               </p>
             )}
             <p className="recipe-date">
-              <strong>Created On :</strong> {new Date(recipeData.creationDate).toLocaleDateString()}
+              <strong>Created On :</strong>{" "}
+              {new Date(recipeData.creationDate).toLocaleDateString()}
             </p>
           </div>
-
-          
         </div>
-        <Modal.Footer className={ userRole != "SystemUser" ? 'd-none'  :'d-block' }>
-            <button className="btn fav-btn" onclick={()=>{handelAddToFavs(id)}}>
-              {isLauding ? (
-                <i className="fa-solid fa-spinner fa-spin"></i>
-              )  : (
-                <>
-                <i className="fa-solid fa-heart me-2 "></i>
-                add to favorites
-                </>
-              )}
-            </button>
-          </Modal.Footer>
-
-
+        <Modal.Footer
+          className={userRole != "SystemUser" ? "d-none" : "d-block"}
+        >
+          <button
+            className="btn fav-btn"
+            onClick={() => {
+              handelAddToFavs();
+            }}
+          >
+            {isLauding ? (
+              <i className="fa-solid fa-spinner fa-spin"></i>
+            ) : (
+              <>
+                {idForRemove ? (
+                  "remove from favorites"
+                ) : (
+                  <>
+                    <i className="fa-solid fa-heart me-2 "></i>
+                    add to favorites
+                  </>
+                )}
+              </>
+            )}
+          </button>
+        </Modal.Footer>
+        </>
+}
       </Modal>
+  
+      
     </>
   );
 }
